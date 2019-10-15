@@ -31,5 +31,22 @@ namespace XRayImageProcessing.Models
             _xRayBitmap = new BitmapImage(uri);
             OnPropertyChanged("XRayBitmap");
         }
+
+        public void ChangeToUri(Uri uri)
+        {
+            _xRayBitmap = new BitmapImage(uri);
+            OnPropertyChanged("XRayBitmap");
+        }
+
+        public void Save(string path)
+        {
+            BitmapEncoder encoder = new PngBitmapEncoder();
+            encoder.Frames.Add(BitmapFrame.Create(_xRayBitmap));
+
+            using (var fileStream = new System.IO.FileStream(path, System.IO.FileMode.Create))
+            {
+                encoder.Save(fileStream);
+            }
+        }
     }
 }

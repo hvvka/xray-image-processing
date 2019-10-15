@@ -26,10 +26,10 @@ namespace XRayImageProcessing.Models
         public ImageProcessor(Uri uri)
         {
             _xRayBefore = new XRayImage(uri);
-            _xRayAfter = InvertColour(new XRayImage(uri));
+            _xRayAfter = new XRayImage(uri);
         }
 
-        private XRayImage InvertColour(XRayImage xRayImage)
+        public void InvertColour(XRayImage xRayImage)
         {
             BitmapImage originalImage = xRayImage.XRayBitmap;
 
@@ -51,7 +51,6 @@ namespace XRayImageProcessing.Models
             modifiedImage.WritePixels(new Int32Rect(0, 0, w, h), pixelData, widthInByte, 0);
 
             xRayImage.XRayBitmap = modifiedImage.ToBitmapImage();
-            return xRayImage;
         }
         public ImageProcessor(Uri uri, XRayImage before, XRayImage after)
         {

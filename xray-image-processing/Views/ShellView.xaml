@@ -35,6 +35,7 @@
         <Image Name="ImageAfter" Source="{Binding Path=ImageProcessor.XRayAfter.XRayBitmap}" Grid.Row="2" Grid.Column="2" MaxWidth="300" MaxHeight="350" Margin="20 10"/>
         <Button x:Name="ChooseFile" Grid.Row="3" Grid.Column="1" Margin="20 10">Choose a file</Button>
         <TextBox Text="{Binding Path=ChosenPath}" TextWrapping="Wrap" MaxWidth="300" Name="ChosenFile" Grid.Row="3" Grid.Column="2" Margin="20 10"/>
+        <Button x:Name="InvertColours" Grid.Row="4" Grid.Column="1" Margin="20 10">Invert colours</Button>
         <Button x:Name="SaveFile" Grid.Row="6" Grid.Column="1" Margin="20 10">Save a file</Button>
 
     </Grid>

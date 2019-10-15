@@ -73,6 +73,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Models\ImageHelpers.cs" />
     <Compile Include="Models\ImageProcessing.cs" />
     <Compile Include="Models\XRayImage.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />

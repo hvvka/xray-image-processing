@@ -81,5 +81,10 @@ namespace XRayImageProcessing.ViewModels
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(caller));
         }
+
+        public void InvertColours()
+        {
+            _imageProcessor.InvertColour(_imageProcessor.XRayAfter);
+        }
     }
 }

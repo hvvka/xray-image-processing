@@ -4,20 +4,25 @@ namespace XRayImageProcessing.Models
 {
     class CircleAdder : IProcesor
     {
+        private readonly Random random = new Random();
+
         public void process(int[] data, int width, int height)
         {
-            // TODO: Select those randomly
-            int radius = 100;
-            int x = width / 2;
-            int y = height / 2;
+            int radius = random.Next(20, 70);
+            int x = random.Next(radius, width - radius);
+            int y = random.Next(radius, height - radius);
 
             for (int h = 0; h < height; h++)
             {
                 for (int w = 0; w < width; w++)
                 {
-                    if ((Math.Pow(x - w, 2) + Math.Pow(y - h, 2)) < radius * radius)
+                    double circle = (Math.Pow(x - w, 2) + Math.Pow(y - h, 2));
+                    double r2 = radius * radius;
+                    if (circle < r2)
                     {
-                        data[h * width + w] = 0x00ffffff;
+                        double ratio = circle / r2;
+                        int c = (int) (64 * ratio + 90); // flat darker color spectrum
+                        data[(h * width) + w] = - (65536*c + 256*c + c);
                     }
                 }
             }

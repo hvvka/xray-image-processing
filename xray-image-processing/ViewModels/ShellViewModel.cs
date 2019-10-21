@@ -66,7 +66,7 @@ namespace XRayImageProcessing.ViewModels
 
         public ShellViewModel()
         {
-            // Todo
+            // TODO: Relative path
             ChosenPath = @"C:\Users\bania\Documents\xray-image-processing\xray-image-processing\Resources\samples\00030636_017.png";
             _imageProcessor = new ImageProcessor(new Uri(ChosenPath));
             OpenNewImage(ChosenPath);

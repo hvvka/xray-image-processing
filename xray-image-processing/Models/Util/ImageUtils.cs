@@ -3,7 +3,7 @@ using System.Windows.Media.Imaging;
 
 namespace XRayImageProcessing.Models
 {
-    public static class ImageHelpers
+    public static class ImageUtils
     {
         public static BitmapImage ToBitmapImage(this WriteableBitmap wbm)
         {

@@ -67,7 +67,7 @@ namespace XRayImageProcessing.ViewModels
         public ShellViewModel()
         {
             // Todo
-            ChosenPath = @"C:\Users\Zofia\Documents\projects\xray-image-processing\xray-image-processing\Resources\samples\00030636_017.png";
+            ChosenPath = @"C:\Users\bania\Documents\xray-image-processing\xray-image-processing\Resources\samples\00030636_017.png";
             _imageProcessor = new ImageProcessor(new Uri(ChosenPath));
             OpenNewImage(ChosenPath);
         }
@@ -84,7 +84,12 @@ namespace XRayImageProcessing.ViewModels
 
         public void InvertColours()
         {
-            _imageProcessor.InvertColour(_imageProcessor.XRayAfter);
+            _imageProcessor.ProcessImage(_imageProcessor.XRayAfter, new ImageInverter());
+        } 
+        
+        public void AddCircle()
+        {
+            _imageProcessor.ProcessImage(_imageProcessor.XRayAfter, new CircleAdder());
         }
     }
 }

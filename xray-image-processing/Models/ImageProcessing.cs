@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Drawing;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -29,29 +28,27 @@ namespace XRayImageProcessing.Models
             _xRayAfter = new XRayImage(uri);
         }
 
-        public void InvertColour(XRayImage xRayImage)
+        public void ProcessImage(XRayImage xRayImage, IProcesor procesor)
         {
             BitmapImage originalImage = xRayImage.XRayBitmap;
 
             BitmapSource bitmapSource = new FormatConvertedBitmap(originalImage, PixelFormats.Pbgra32, null, 0);
             WriteableBitmap modifiedImage = new WriteableBitmap(bitmapSource);
 
-            int h = modifiedImage.PixelHeight;
-            int w = modifiedImage.PixelWidth;
-            int[] pixelData = new int[w * h];
-            int widthInByte = 4 * w;
+            int height = modifiedImage.PixelHeight;
+            int width = modifiedImage.PixelWidth;
+            int[] pixelData = new int[width * height];
+            int widthInByte = 4 * width;
 
             modifiedImage.CopyPixels(pixelData, widthInByte, 0);
 
-            for (int i = 0; i < pixelData.Length; i++)
-            {
-                pixelData[i] ^= 0x00ffffff;
-            }
+            procesor.process(pixelData, width, height);
 
-            modifiedImage.WritePixels(new Int32Rect(0, 0, w, h), pixelData, widthInByte, 0);
+            modifiedImage.WritePixels(new Int32Rect(0, 0, width, height), pixelData, widthInByte, 0);
 
             xRayImage.XRayBitmap = modifiedImage.ToBitmapImage();
         }
+
         public ImageProcessor(Uri uri, XRayImage before, XRayImage after)
         {
             _xRayBefore = before;

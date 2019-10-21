@@ -20,23 +20,24 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
+            <RowDefinition Height="46"/>
+            <RowDefinition Height="0"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="20"/>
+            <RowDefinition Height="auto" MinHeight="40"/>
+            <RowDefinition Height="0*"/>
+            <RowDefinition Height="516.5"/>
         </Grid.RowDefinitions>
-        <Label Name="LabelBefore" Content="Before" Grid.Row="1" Grid.Column="1" Margin="20 10"/>
-        <Label Name="LabelAfter" Content="After" Grid.Row="1" Grid.Column="2" Margin="20 10"/>
-        <Image Name="ImageBefore" Source="{Binding Path=ImageProcessor.XRayBefore.XRayBitmap}" Grid.Row="2" Grid.Column="1" MaxWidth="300" MaxHeight="350" Margin="20 10"/>
-        <Image Name="ImageAfter" Source="{Binding Path=ImageProcessor.XRayAfter.XRayBitmap}" Grid.Row="2" Grid.Column="2" MaxWidth="300" MaxHeight="350" Margin="20 10"/>
-        <Button x:Name="ChooseFile" Grid.Row="3" Grid.Column="1" Margin="20 10">Choose a file</Button>
-        <TextBox Text="{Binding Path=ChosenPath}" TextWrapping="Wrap" MaxWidth="300" Name="ChosenFile" Grid.Row="3" Grid.Column="2" Margin="20 10"/>
-        <Button x:Name="InvertColours" Grid.Row="4" Grid.Column="1" Margin="20 10">Invert colours</Button>
-        <Button x:Name="SaveFile" Grid.Row="6" Grid.Column="1" Margin="20 10">Save a file</Button>
-
+        <Label Name="LabelBefore" Content="Before" Grid.Row="1" Grid.Column="1" Margin="20,10,20,4"/>
+        <Label Name="LabelAfter" Content="After" Grid.Row="1" Grid.Column="2" Margin="20,10,20,4"/>
+        <Image Name="ImageBefore" Source="{Binding Path=ImageProcessor.XRayBefore.XRayBitmap}" Grid.Row="3" Grid.Column="1" MaxWidth="300" MaxHeight="350" Margin="20 10"/>
+        <Image Name="ImageAfter" Source="{Binding Path=ImageProcessor.XRayAfter.XRayBitmap}" Grid.Row="3" Grid.Column="2" MaxWidth="300" MaxHeight="350" Margin="20 10"/>
+        <Button x:Name="ChooseFile" Grid.Row="4" Grid.Column="1" Margin="20 10">Choose a file</Button>
+        <TextBox Text="{Binding Path=ChosenPath}" TextWrapping="Wrap" MaxWidth="300" Name="ChosenFile" Grid.Row="4" Grid.Column="2" Margin="20 10"/>
+        <Button x:Name="InvertColours" Grid.Row="5" Grid.Column="1" Margin="20 10">Invert colours</Button>
+        <Button x:Name="AddCircle" Grid.Row="6" Grid.Column="1" Margin="20,7,20,10">Add circle</Button>
+        <Button x:Name="SaveFile" Grid.Row="7" Grid.Column="1" Margin="20,10,20,10.5">Save a file</Button>
     </Grid>
 </Window>

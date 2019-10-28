@@ -50,7 +50,7 @@ namespace XRayImageProcessing.ViewModels
         {
             Microsoft.Win32.SaveFileDialog saveFileDialog = new Microsoft.Win32.SaveFileDialog()
             {
-                FileName = Path.GetFileNameWithoutExtension(_chosenPath) + "_" + DateTime.Now.ToString("MM-dd-yyyy_HH-mm-ss") + ".png",
+                FileName = Path.GetFileNameWithoutExtension(_chosenPath) + "_" + DateTime.Now.ToString("yyyy-dd-MM_HH-mm-ss") + ".png",
                 DefaultExt = ".png",
                 Filter = "Png files (.png)|*.png"
             };
@@ -67,7 +67,7 @@ namespace XRayImageProcessing.ViewModels
         public ShellViewModel()
         {
             // TODO: Relative path
-            ChosenPath = @"C:\Users\bania\Documents\xray-image-processing\xray-image-processing\Resources\samples\00030636_017.png";
+            ChosenPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\Resources\samples\00030636_017.png");
             _imageProcessor = new ImageProcessor(new Uri(ChosenPath));
             OpenNewImage(ChosenPath);
         }

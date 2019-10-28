@@ -15,7 +15,9 @@ namespace XRayImageProcessing.Models
             get { return _xRayBefore; }
             set { _xRayBefore = value; }
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
         public XRayImage XRayAfter
         {
             get { return _xRayAfter; }

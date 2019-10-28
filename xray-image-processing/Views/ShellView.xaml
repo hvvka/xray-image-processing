@@ -26,9 +26,9 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto" MinHeight="40"/>
-            <RowDefinition Height="0*"/>
-            <RowDefinition Height="516.5"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="435.5"/>
         </Grid.RowDefinitions>
         <Label Name="LabelBefore" Content="Before" Grid.Row="1" Grid.Column="1" Margin="20,10,20,4"/>
         <Label Name="LabelAfter" Content="After" Grid.Row="1" Grid.Column="2" Margin="20,10,20,4"/>
@@ -37,7 +37,8 @@
         <Button x:Name="ChooseFile" Grid.Row="4" Grid.Column="1" Margin="20 10">Choose a file</Button>
         <TextBox Text="{Binding Path=ChosenPath}" TextWrapping="Wrap" MaxWidth="300" Name="ChosenFile" Grid.Row="4" Grid.Column="2" Margin="20 10"/>
         <Button x:Name="InvertColours" Grid.Row="5" Grid.Column="1" Margin="20 10">Invert colours</Button>
-        <Button x:Name="AddCircle" Grid.Row="6" Grid.Column="1" Margin="20,7,20,10">Add circle</Button>
-        <Button x:Name="SaveFile" Grid.Row="7" Grid.Column="1" Margin="20,10,20,10.5">Save a file</Button>
+        <Button x:Name="AddCircle" Grid.Row="6" Grid.Column="1" Margin="20,10,20,10">Add circle</Button>
+        <Button x:Name="AddSquare" Grid.Row="7" Grid.Column="1" Margin="20,10,20,10">Add square</Button>
+        <Button x:Name="SaveFile" Grid.Row="8" Grid.Column="1" Margin="20,10">Save a file</Button>
     </Grid>
 </Window>

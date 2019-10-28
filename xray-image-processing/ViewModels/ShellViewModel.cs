@@ -91,5 +91,10 @@ namespace XRayImageProcessing.ViewModels
         {
             _imageProcessor.ProcessImage(_imageProcessor.XRayAfter, new CircleAdder());
         }
+
+        public void AddSquare()
+        {
+            _imageProcessor.ProcessImage(_imageProcessor.XRayAfter, new SquareAdder());
+        }
     }
 }

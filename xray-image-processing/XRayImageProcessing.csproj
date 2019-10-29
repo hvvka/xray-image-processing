@@ -76,6 +76,7 @@
     </Compile>
     <Compile Include="Models\Comparators\BitByBitComparator.cs" />
     <Compile Include="Models\Comparators\IComparator.cs" />
+    <Compile Include="Models\Comparators\SubimagesComparator.cs" />
     <Compile Include="Models\Procesors\SquareAdder.cs" />
     <Compile Include="Models\Procesors\CircleAdder.cs" />
     <Compile Include="Models\Procesors\ImageInverter.cs" />

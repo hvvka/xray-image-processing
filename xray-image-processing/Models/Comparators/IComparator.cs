@@ -1,7 +1,4 @@
-﻿using System;
-using System.Windows.Media.Imaging;
-
-namespace XRayImageProcessing.Models
+﻿namespace XRayImageProcessing.Models
 {
     public interface IComparator
     {

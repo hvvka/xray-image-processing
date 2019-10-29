@@ -42,6 +42,8 @@
         <Button x:Name="AddSquare" Grid.Row="7" Grid.Column="1" Margin="20,10,20,10">Add square</Button>
         <Button x:Name="SaveFile" Grid.Row="8" Grid.Column="1" Margin="20,10">Save a file</Button>
         <Button x:Name="CompareBitByBit" Grid.Row="9" Grid.Column="1" Margin="20,10,20,10">Compare bit by bit</Button>
+        <Button x:Name="CompareSubimages" Grid.Row="10" Grid.Column="1" Margin="20,10,20,10">Compare 4^n subimages</Button>
+        <TextBox Text="{Binding Path=PowerForImageDivision}" Grid.Row="10" Grid.Column="2" Margin="20,10,20,10"/>
 
     </Grid>
 </Window>

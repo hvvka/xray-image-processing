@@ -12,9 +12,15 @@ namespace XRayImageProcessing.ViewModels
     {
         private ImageProcessor _imageProcessor;
         private string _chosenPath = "default";
+        private string _powerForImageDivision = "20";
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        public string PowerForImageDivision
+        {
+            get { return _powerForImageDivision; }
+            set { _powerForImageDivision = value; }
+        }
         public string ChosenPath
         {
             get { return _chosenPath; }
@@ -100,6 +106,15 @@ namespace XRayImageProcessing.ViewModels
         public void CompareBitByBit()
         {
             _imageProcessor.CompareImages(_imageProcessor.XRayBefore, _imageProcessor.XRayAfter, _imageProcessor.XRayImagesDiff, new BitByBitComparator());
+        }
+
+        public void CompareSubimages()
+        {
+            int power;
+            if (int.TryParse(_powerForImageDivision, out power))
+            {
+                _imageProcessor.CompareImages(_imageProcessor.XRayBefore, _imageProcessor.XRayAfter, _imageProcessor.XRayImagesDiff, new SubimagesComparator(power));
+            }
         }
     }
 }

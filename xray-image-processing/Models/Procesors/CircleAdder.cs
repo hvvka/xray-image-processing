@@ -21,8 +21,8 @@ namespace XRayImageProcessing.Models
                     if (circle < r2)
                     {
                         double ratio = circle / r2;
-                        int c = (int) (48 * ratio + 90); // flat darker color spectrum
-                        data[(h * width) + w] = - (65536*c + 256*c + c);
+                        int c = (int)(48 * ratio + 90); // flat darker color spectrum
+                        data[(h * width) + w] = -(65536 * c + 256 * c + c);
                     }
                 }
             }

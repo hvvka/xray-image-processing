@@ -9,6 +9,7 @@ namespace XRayImageProcessing.Models
     {
         private XRayImage _xRayBefore;
         private XRayImage _xRayAfter;
+        private XRayImage _xRayImagesDiff;
 
         public XRayImage XRayBefore
         {
@@ -24,10 +25,28 @@ namespace XRayImageProcessing.Models
             set { _xRayAfter = value; }
         }
 
+        public XRayImage XRayImagesDiff
+        {
+            get { return _xRayImagesDiff; }
+            set { _xRayImagesDiff = value; }
+        }
+
         public ImageProcessor(Uri uri)
         {
             _xRayBefore = new XRayImage(uri);
             _xRayAfter = new XRayImage(uri);
+            _xRayImagesDiff = new XRayImage(uri);
+
+        }
+
+        public ImageProcessor(Uri uri, XRayImage before, XRayImage after, XRayImage diff)
+        {
+            _xRayBefore = before;
+            _xRayBefore.ChangeToUri(uri);
+            _xRayAfter = after;
+            _xRayAfter.ChangeToUri(uri);
+            _xRayImagesDiff = diff;
+            _xRayImagesDiff.ChangeToUri(uri);
         }
 
         public void ProcessImage(XRayImage xRayImage, IProcesor procesor)
@@ -51,13 +70,38 @@ namespace XRayImageProcessing.Models
             xRayImage.XRayBitmap = modifiedImage.ToBitmapImage();
         }
 
-        public ImageProcessor(Uri uri, XRayImage before, XRayImage after)
+        public void CompareImages(XRayImage xRayImageBefore, XRayImage xRayImageAfter, XRayImage imagesDiff, IComparator comparator)
         {
-            _xRayBefore = before;
-            _xRayBefore.ChangeToUri(uri);
-            _xRayAfter = after;
-            _xRayAfter.ChangeToUri(uri);
-        }
+            BitmapImage imageBefore = xRayImageBefore.XRayBitmap;
+            BitmapImage imageAfter = xRayImageAfter.XRayBitmap;
 
+            if (imageBefore.PixelWidth != imageAfter.PixelWidth || imageBefore.PixelHeight != imageAfter.PixelHeight)
+            {
+                throw new System.Exception("Bitmaps have different dimensions");
+            }
+
+            BitmapSource bitmapSourceBefore = new FormatConvertedBitmap(imageBefore, PixelFormats.Pbgra32, null, 0);
+            BitmapSource bitmapSourceAfter = new FormatConvertedBitmap(imageAfter, PixelFormats.Pbgra32, null, 0);
+            WriteableBitmap imageBeforeWritable = new WriteableBitmap(bitmapSourceBefore);
+            WriteableBitmap imageAfterWritable = new WriteableBitmap(bitmapSourceAfter);
+            WriteableBitmap imagesDiffWritable = new WriteableBitmap(bitmapSourceAfter);
+
+            int width = imageAfter.PixelWidth;
+            int height = imageAfter.PixelHeight;
+
+            int[] pixelDataBefore = new int[width * height];
+            int[] pixelDataAfter = new int[width * height];
+            int[] pixelDataDiff = new int[width * height];
+            int widthInByte = 4 * imageAfter.PixelWidth;
+
+            imageBeforeWritable.CopyPixels(pixelDataBefore, widthInByte, 0);
+            imageAfterWritable.CopyPixels(pixelDataAfter, widthInByte, 0);
+            imagesDiffWritable.CopyPixels(pixelDataDiff, widthInByte, 0);
+
+            comparator.compare(pixelDataBefore, pixelDataAfter, pixelDataDiff, width, height);
+
+            imagesDiffWritable.WritePixels(new Int32Rect(0, 0, width, height), pixelDataDiff, widthInByte, 0);
+            imagesDiff.XRayBitmap = imagesDiffWritable.ToBitmapImage();
+        }
     }
 }

@@ -67,14 +67,14 @@ namespace XRayImageProcessing.ViewModels
         public ShellViewModel()
         {
             // TODO: Relative path
-            ChosenPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\Resources\samples\00030636_017.png");
+            ChosenPath = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\Resources\samples\00030636_017.png"));
             _imageProcessor = new ImageProcessor(new Uri(ChosenPath));
             OpenNewImage(ChosenPath);
         }
 
         private void OpenNewImage(string path)
         {
-            _imageProcessor = new ImageProcessor(new Uri(path), _imageProcessor.XRayBefore, _imageProcessor.XRayAfter);
+            _imageProcessor = new ImageProcessor(new Uri(path), _imageProcessor.XRayBefore, _imageProcessor.XRayAfter, _imageProcessor.XRayImagesDiff);
         }
 
         private void OnPropertyChanged([CallerMemberName]string caller = null)
@@ -85,8 +85,8 @@ namespace XRayImageProcessing.ViewModels
         public void InvertColours()
         {
             _imageProcessor.ProcessImage(_imageProcessor.XRayAfter, new ImageInverter());
-        } 
-        
+        }
+
         public void AddCircle()
         {
             _imageProcessor.ProcessImage(_imageProcessor.XRayAfter, new CircleAdder());
@@ -95,6 +95,11 @@ namespace XRayImageProcessing.ViewModels
         public void AddSquare()
         {
             _imageProcessor.ProcessImage(_imageProcessor.XRayAfter, new SquareAdder());
+        }
+
+        public void CompareBitByBit()
+        {
+            _imageProcessor.CompareImages(_imageProcessor.XRayBefore, _imageProcessor.XRayAfter, _imageProcessor.XRayImagesDiff, new BitByBitComparator());
         }
     }
 }

@@ -79,7 +79,19 @@ namespace XRayImageProcessing.Models
             Bitmap bitmap = ImageUtils.BitmapImage2Bitmap(originalImage);
 
             FloodFill floodFill = new FloodFill();
-            floodFill.Fill(bitmap, new System.Drawing.Point(100, 10), System.Drawing.Color.Black, System.Drawing.Color.Blue);
+
+            // top & bottom borders
+            for (int x = 0; x < bitmap.Width; x += 100)
+            {
+                floodFill.Fill(bitmap, new System.Drawing.Point(x, 0), System.Drawing.Color.Black, System.Drawing.Color.Transparent);
+                floodFill.Fill(bitmap, new System.Drawing.Point(x, bitmap.Height - 1), System.Drawing.Color.Black, System.Drawing.Color.Transparent);
+            }            
+            // left & right borders
+            for (int y = 0; y < bitmap.Height; y += 100)
+            {
+                floodFill.Fill(bitmap, new System.Drawing.Point(0, y), System.Drawing.Color.Black, System.Drawing.Color.Transparent);
+                floodFill.Fill(bitmap, new System.Drawing.Point(bitmap.Width - 1, y), System.Drawing.Color.Black, System.Drawing.Color.Transparent);
+            }
 
             xRayImage.XRayBitmap = ImageUtils.Bitmap2BitmapImage(bitmap);
         }

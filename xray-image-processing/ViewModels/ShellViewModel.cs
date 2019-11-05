@@ -5,6 +5,7 @@ using System.IO;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using XRayImageProcessing.Models;
+using XRayImageProcessing.Models.Procesors;
 
 namespace XRayImageProcessing.ViewModels
 {
@@ -106,6 +107,11 @@ namespace XRayImageProcessing.ViewModels
         public void FloodFill()
         {
             _imageProcessor.FloodFill(_imageProcessor.XRayAfter);
+        }
+
+        public void FillBorders()
+        {
+            _imageProcessor.ProcessImage(_imageProcessor.XRayAfter, new BorderFiller());
         }
 
         public void CompareBitByBit()

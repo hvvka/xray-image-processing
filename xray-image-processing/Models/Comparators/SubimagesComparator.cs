@@ -40,6 +40,7 @@ namespace XRayImageProcessing.Models
                 }
             }
         }
+
         public void compare(int[] dataBefore, int[] dataAfter, int[] dataDiff, int width, int height)
         {
             int widthOffset = width / _power;

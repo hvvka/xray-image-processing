@@ -11,17 +11,13 @@ namespace XRayImageProcessing.ViewModels
 {
     public class ShellViewModel : Screen, INotifyPropertyChanged
     {
-        private ImageProcessor _imageProcessor;
         private string _chosenPath = "default";
-        private string _powerForImageDivision = "20";
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public string PowerForImageDivision
-        {
-            get { return _powerForImageDivision; }
-            set { _powerForImageDivision = value; }
-        }
+        public int BorderWidth { get; set; } = 100;
+        public int PercentCovered { get; set; } = 25;
+        public string PowerForImageDivision { get; set; } = "20";
         public string ChosenPath
         {
             get { return _chosenPath; }
@@ -32,11 +28,7 @@ namespace XRayImageProcessing.ViewModels
             }
         }
 
-        public ImageProcessor ImageProcessor
-        {
-            get { return _imageProcessor; }
-            set { _imageProcessor = value; }
-        }
+        public ImageProcessor ImageProcessor { get; set; }
         public void ChooseFile(object sender, RoutedEventArgs e)
         {
             Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog
@@ -67,7 +59,7 @@ namespace XRayImageProcessing.ViewModels
             if (result == true)
             {
                 string path = saveFileDialog.FileName;
-                _imageProcessor.XRayAfter.Save(path);
+                ImageProcessor.XRayAfter.Save(path);
             }
         }
 
@@ -75,13 +67,13 @@ namespace XRayImageProcessing.ViewModels
         {
             // TODO: Relative path
             ChosenPath = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\Resources\samples\00030636_017.png"));
-            _imageProcessor = new ImageProcessor(new Uri(ChosenPath));
+            ImageProcessor = new ImageProcessor(new Uri(ChosenPath));
             OpenNewImage(ChosenPath);
         }
 
         private void OpenNewImage(string path)
         {
-            _imageProcessor = new ImageProcessor(new Uri(path), _imageProcessor.XRayBefore, _imageProcessor.XRayAfter, _imageProcessor.XRayImagesDiff);
+            ImageProcessor = new ImageProcessor(new Uri(path), ImageProcessor.XRayBefore, ImageProcessor.XRayAfter, ImageProcessor.XRayImagesDiff);
         }
 
         private void OnPropertyChanged([CallerMemberName]string caller = null)
@@ -91,40 +83,42 @@ namespace XRayImageProcessing.ViewModels
 
         public void InvertColours()
         {
-            _imageProcessor.ProcessImage(_imageProcessor.XRayAfter, new ImageInverter());
+            ImageProcessor.ProcessImage(ImageProcessor.XRayAfter, new ImageInverter());
         }
 
         public void AddCircle()
         {
-            _imageProcessor.ProcessImage(_imageProcessor.XRayAfter, new CircleAdder());
+            ImageProcessor.ProcessImage(ImageProcessor.XRayAfter, new CircleAdder());
         }
 
         public void AddSquare()
         {
-            _imageProcessor.ProcessImage(_imageProcessor.XRayAfter, new SquareAdder());
+            ImageProcessor.ProcessImage(ImageProcessor.XRayAfter, new SquareAdder());
         }
 
         public void FloodFill()
         {
-            _imageProcessor.FloodFill(_imageProcessor.XRayAfter);
+            ImageProcessor.FloodFill(ImageProcessor.XRayAfter);
         }
 
         public void FillBorders()
         {
-            _imageProcessor.ProcessImage(_imageProcessor.XRayAfter, new BorderFiller());
+            BorderFiller._delta = BorderWidth;
+            BorderFiller._percent = PercentCovered;
+
+            ImageProcessor.ProcessImage(ImageProcessor.XRayAfter, new BorderFiller());
         }
 
         public void CompareBitByBit()
         {
-            _imageProcessor.CompareImages(_imageProcessor.XRayBefore, _imageProcessor.XRayAfter, _imageProcessor.XRayImagesDiff, new BitByBitComparator());
+            ImageProcessor.CompareImages(ImageProcessor.XRayBefore, ImageProcessor.XRayAfter, ImageProcessor.XRayImagesDiff, new BitByBitComparator());
         }
 
         public void CompareSubimages()
         {
-            int power;
-            if (int.TryParse(_powerForImageDivision, out power))
+            if (int.TryParse(PowerForImageDivision, out int power))
             {
-                _imageProcessor.CompareImages(_imageProcessor.XRayBefore, _imageProcessor.XRayAfter, _imageProcessor.XRayImagesDiff, new SubimagesComparator(power));
+                ImageProcessor.CompareImages(ImageProcessor.XRayBefore, ImageProcessor.XRayAfter, ImageProcessor.XRayImagesDiff, new SubimagesComparator(power));
             }
         }
     }

@@ -5,9 +5,9 @@ namespace XRayImageProcessing.Models.Procesors
 {
     class BorderFiller : IProcesor
     {
-        private readonly int _delta = 100;
+        public static int _delta = 100;
 
-        private readonly int _percent = 25;
+        public static int _percent = 25;
 
         public void process(int[] data, int width, int height)
         {

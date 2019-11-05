@@ -103,6 +103,11 @@ namespace XRayImageProcessing.ViewModels
             _imageProcessor.ProcessImage(_imageProcessor.XRayAfter, new SquareAdder());
         }
 
+        public void FloodFill()
+        {
+            _imageProcessor.FloodFill(_imageProcessor.XRayAfter);
+        }
+
         public void CompareBitByBit()
         {
             _imageProcessor.CompareImages(_imageProcessor.XRayBefore, _imageProcessor.XRayAfter, _imageProcessor.XRayImagesDiff, new BitByBitComparator());

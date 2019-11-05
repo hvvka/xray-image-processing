@@ -74,6 +74,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Models\Algorithms\FloodFill.cs" />
     <Compile Include="Models\Comparators\BitByBitComparator.cs" />
     <Compile Include="Models\Comparators\IComparator.cs" />
     <Compile Include="Models\Comparators\SubimagesComparator.cs" />

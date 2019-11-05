@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Drawing;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using XRayImageProcessing.Models.Algorithms;
 
 namespace XRayImageProcessing.Models
 {
@@ -68,6 +70,18 @@ namespace XRayImageProcessing.Models
             modifiedImage.WritePixels(new Int32Rect(0, 0, width, height), pixelData, widthInByte, 0);
 
             xRayImage.XRayBitmap = modifiedImage.ToBitmapImage();
+        }
+
+        public void FloodFill(XRayImage xRayImage)
+        {
+            BitmapImage originalImage = xRayImage.XRayBitmap;
+
+            Bitmap bitmap = ImageUtils.BitmapImage2Bitmap(originalImage);
+
+            FloodFill floodFill = new FloodFill();
+            floodFill.Fill(bitmap, new System.Drawing.Point(100, 10), System.Drawing.Color.Black, System.Drawing.Color.Blue);
+
+            xRayImage.XRayBitmap = ImageUtils.Bitmap2BitmapImage(bitmap);
         }
 
         public void CompareImages(XRayImage xRayImageBefore, XRayImage xRayImageAfter, XRayImage imagesDiff, IComparator comparator)

@@ -6,7 +6,7 @@ namespace XRayImageProcessing.Models
     {
         private readonly Random random = new Random();
 
-        public void process(int[] data, int width, int height)
+        public void process(List<int> data, int width, int height)
         {
             int radius = random.Next(20, 70);
             int x = random.Next(radius, width - radius);

@@ -11,7 +11,7 @@ namespace XRayImageProcessing.Models.Procesors
 
         public void process(int[] data, int width, int height)
         {
-            int[] borders = new int[data.Length];
+            List<int> borders = new List<int>();
 
             IterateBitmap(height, width, (h, w) =>
             {
@@ -21,7 +21,9 @@ namespace XRayImageProcessing.Models.Procesors
                 }
             });
 
-            Array.Sort(borders);
+            // Array.Sort(borders);
+            borders.Sort();
+            
             int limit = borders[_percent * (2 * (_delta * width) + 2 * (_delta * (height - 2 * _delta))) / 100];
 
             IterateBitmap(height, width, (h, w) =>

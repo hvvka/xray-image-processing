@@ -65,7 +65,7 @@ namespace XRayImageProcessing.Models
 
             modifiedImage.CopyPixels(pixelData, widthInByte, 0);
 
-            procesor.process(pixelData, width, height);
+            procesor.process(pixelData, width, height); // TODO: return List
 
             modifiedImage.WritePixels(new Int32Rect(0, 0, width, height), pixelData, widthInByte, 0);
 

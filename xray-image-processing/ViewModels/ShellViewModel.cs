@@ -5,6 +5,7 @@ using System.IO;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using XRayImageProcessing.Models;
+using XRayImageProcessing.Models;
 
 namespace XRayImageProcessing.ViewModels
 {
@@ -73,7 +74,7 @@ namespace XRayImageProcessing.ViewModels
         public ShellViewModel()
         {
             // TODO: Relative path
-            ChosenPath = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\Resources\samples\00030636_017.png"));
+            ChosenPath = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\Resources\samples\spots.png"));
             _imageProcessor = new ImageProcessor(new Uri(ChosenPath));
             OpenNewImage(ChosenPath);
         }
@@ -103,6 +104,11 @@ namespace XRayImageProcessing.ViewModels
             _imageProcessor.ProcessImage(_imageProcessor.XRayAfter, new SquareAdder());
         }
 
+        public void AddFixedSquare()
+        {
+            _imageProcessor.ProcessImage(_imageProcessor.XRayAfter, new SquareAdder(70, 145));
+        }
+
         public void CompareBitByBit()
         {
             _imageProcessor.CompareImages(_imageProcessor.XRayBefore, _imageProcessor.XRayAfter, _imageProcessor.XRayImagesDiff, new BitByBitComparator());
@@ -115,6 +121,11 @@ namespace XRayImageProcessing.ViewModels
             {
                 _imageProcessor.CompareImages(_imageProcessor.XRayBefore, _imageProcessor.XRayAfter, _imageProcessor.XRayImagesDiff, new SubimagesComparator(power));
             }
+        }
+
+        public void DetectFixedSquares()
+        {
+            _imageProcessor.DetectSquares(_imageProcessor.XRayAfter, _imageProcessor.XRayImagesDiff, new SquareDetector(70, 145));
         }
     }
 }

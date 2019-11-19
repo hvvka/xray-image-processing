@@ -4,14 +4,37 @@ namespace XRayImageProcessing.Models
 {
     class SquareAdder : IProcesor
     {
-        private readonly Random random = new Random();
+        private readonly int size;
+        private readonly int? color = null;
 
+        public SquareAdder()
+        {
+            size = new Random().Next(50, 90);
+        }
+
+        public SquareAdder(int size, int color)
+        {
+            this.size = size;
+            this.color = color;
+        }
         public void process(int[] data, int width, int height)
         {
-            int size = random.Next(50, 90);
+            Random random = new Random();
             int x = random.Next(size, width - size);
             int y = random.Next(size, height - size);
 
+            if (color == null)
+            {
+                FillWithSpectralColor(x, y, data, width);
+            }
+            else
+            {
+                FillWithFixedColor(x, y, data, width);
+            }
+        }
+
+        private void FillWithSpectralColor(int x, int y, int[] data, int width)
+        {
             for (int h = y; h < y + size; h++)
             {
                 for (int w = x; w < x + size; w++)
@@ -22,5 +45,19 @@ namespace XRayImageProcessing.Models
                 }
             }
         }
+
+        private void FillWithFixedColor(int x, int y, int[] data, int width)
+        {
+            int c = color.GetValueOrDefault();
+
+            for (int h = y; h < y + size; h++)
+            {
+                for (int w = x; w < x + size; w++)
+                {
+                    data[(h * width) + w] = -(65536 * c + 256 * c + c);
+                }
+            }
+        }
+
     }
 }

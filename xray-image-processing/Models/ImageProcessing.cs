@@ -103,5 +103,26 @@ namespace XRayImageProcessing.Models
             imagesDiffWritable.WritePixels(new Int32Rect(0, 0, width, height), pixelDataDiff, widthInByte, 0);
             imagesDiff.XRayBitmap = imagesDiffWritable.ToBitmapImage();
         }
+
+        public void DetectSquares(XRayImage xRayImageAfter, XRayImage imagesDiff, SquareDetector squareDetector)
+        {
+            BitmapImage imageAfter = xRayImageAfter.XRayBitmap;
+
+            BitmapSource bitmapSourceAfter = new FormatConvertedBitmap(imageAfter, PixelFormats.Pbgra32, null, 0);
+            WriteableBitmap imagesDiffWritable = new WriteableBitmap(bitmapSourceAfter);
+
+            int width = imageAfter.PixelWidth;
+            int height = imageAfter.PixelHeight;
+
+            int[] pixelDataDiff = new int[width * height];
+            int widthInByte = 4 * imageAfter.PixelWidth;
+
+            imagesDiffWritable.CopyPixels(pixelDataDiff, widthInByte, 0);
+
+            squareDetector.Detect(pixelDataDiff, width, height);
+
+            imagesDiffWritable.WritePixels(new Int32Rect(0, 0, width, height), pixelDataDiff, widthInByte, 0);
+            imagesDiff.XRayBitmap = imagesDiffWritable.ToBitmapImage();
+        }
     }
 }

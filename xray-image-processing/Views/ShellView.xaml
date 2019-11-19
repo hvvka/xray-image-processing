@@ -49,7 +49,7 @@
         <Button x:Name="CompareBitByBit" Grid.Row="11" Grid.Column="1" Margin="20,10,20,10">Compare bit by bit</Button>
         <Button x:Name="CompareSubimages" Grid.Row="12" Grid.Column="1" Margin="20,10,20,10">Compare 4^n subimages</Button>
         <Button x:Name="DetectFixedSquares" Grid.Row="13" Grid.Column="1" Margin="20,10,20,10">Detect fixed squares</Button>
-        <TextBox Text="{Binding Path=PowerForImageDivision}" Grid.Row="10" Grid.Column="2" Margin="20,10,20,10"/>
+        <TextBox Text="{Binding Path=PowerForImageDivision}" Grid.Row="10" Grid.Column="2" Margin="20,10,20,10" ToolTip="Power for image division"/>
         <TextBox Text="{Binding Path=BorderWidth}" Grid.Column="2" HorizontalAlignment="Left" Height="auto" Margin="10,10,10,10" Grid.Row="9" TextWrapping="Wrap" VerticalAlignment="Top" Width="auto" ToolTip="Border width"/>
         <TextBox Text="{Binding Path=PercentCovered}" Grid.Column="2" HorizontalAlignment="Center" Height="auto" Margin="10,10,10,10" Grid.Row="9" TextWrapping="Wrap" VerticalAlignment="Top" Width="auto" ToolTip="Percent covered"/>
         <Button x:Name="Undo" Content="Undo" Margin="20,10,20,10" Grid.Row="5"/>

@@ -91,7 +91,7 @@ namespace XRayImageProcessing.ViewModels
 
         public void AddFixedSquare()
         {
-            _imageProcessor.ProcessImage(_imageProcessor.XRayAfter, new SquareAdder(70, 145));
+            ImageProcessor.ProcessImage(ImageProcessor.XRayAfter, new SquareAdder(70, 145));
         }
         
         public void FillBorders()
@@ -113,7 +113,7 @@ namespace XRayImageProcessing.ViewModels
 
         public void DetectFixedSquares()
         {
-            _imageProcessor.DetectSquares(_imageProcessor.XRayAfter, _imageProcessor.XRayImagesDiff, new SquareDetector(70, 145));
+            ImageProcessor.DetectSquares(ImageProcessor.XRayAfter, ImageProcessor.XRayImagesDiff, new SquareDetector(70, 145));
         }
     }
 }

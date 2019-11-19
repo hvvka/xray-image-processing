@@ -31,7 +31,6 @@ namespace XRayImageProcessing.Models
         private void FillRectangle(int[] dataDiff, int a, int b, int c, int d, int color, int width)
         {
             string hexColor = Convert.ToInt32(155 + Convert.ToDouble(color)).ToString("X");
-            Console.WriteLine(hexColor);
             for (int w = a; w < b; w++)
             {
                 for (int h = c; h < d; h++)

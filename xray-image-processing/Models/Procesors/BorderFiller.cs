@@ -9,7 +9,7 @@ namespace XRayImageProcessing.Models.Procesors
 
         public static int _percent = 25;
 
-        public void process(int[] data, int width, int height)
+        public int[] Process(int[] data, int width, int height)
         {
             int[] borders = new int[data.Length];
 
@@ -28,9 +28,11 @@ namespace XRayImageProcessing.Models.Procesors
             {
                 if (data[(h * width) + w] < limit && IsBorder(h, w, width, height))
                 {
-                    data[(h * width) + w] = Color.Black.ToArgb();
+                    data[(h * width) + w] = Color.Transparent.ToArgb();
                 }
             });
+
+            return data;
         }
 
         private bool IsBorder(int h, int w, int width, int height) =>

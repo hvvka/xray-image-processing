@@ -37,7 +37,7 @@ namespace XRayImageProcessing.ViewModels
                 Filter = "Png files (.png)|*.png"
             };
 
-            Nullable<bool> result = openFileDialog.ShowDialog();
+            bool? result = openFileDialog.ShowDialog();
 
             if (result == true)
             {
@@ -54,7 +54,7 @@ namespace XRayImageProcessing.ViewModels
                 Filter = "Png files (.png)|*.png"
             };
 
-            Nullable<bool> result = saveFileDialog.ShowDialog();
+            bool? result = saveFileDialog.ShowDialog();
 
             if (result == true)
             {
@@ -71,35 +71,19 @@ namespace XRayImageProcessing.ViewModels
             OpenNewImage(ChosenPath);
         }
 
-        private void OpenNewImage(string path)
-        {
-            ImageProcessor = new ImageProcessor(new Uri(path), ImageProcessor.XRayBefore, ImageProcessor.XRayAfter, ImageProcessor.XRayImagesDiff);
-        }
+        private void OpenNewImage(string path) => ImageProcessor = new ImageProcessor(new Uri(path), ImageProcessor.XRayBefore, ImageProcessor.XRayAfter, ImageProcessor.XRayImagesDiff);
 
-        private void OnPropertyChanged([CallerMemberName]string caller = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(caller));
-        }
+        private void OnPropertyChanged([CallerMemberName]string caller = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(caller));
 
-        public void InvertColours()
-        {
-            ImageProcessor.ProcessImage(ImageProcessor.XRayAfter, new ImageInverter());
-        }
+        public void InvertColours() => ImageProcessor.ProcessImage(ImageProcessor.XRayAfter, new ImageInverter());
 
-        public void AddCircle()
-        {
-            ImageProcessor.ProcessImage(ImageProcessor.XRayAfter, new CircleAdder());
-        }
+        public void AddCircle() => ImageProcessor.ProcessImage(ImageProcessor.XRayAfter, new CircleAdder());
 
-        public void AddSquare()
-        {
-            ImageProcessor.ProcessImage(ImageProcessor.XRayAfter, new SquareAdder());
-        }
+        public void AddSquare() => ImageProcessor.ProcessImage(ImageProcessor.XRayAfter, new SquareAdder());
 
-        public void FloodFill()
-        {
-            ImageProcessor.FloodFill(ImageProcessor.XRayAfter);
-        }
+        public void FloodFill() => ImageProcessor.FloodFill(ImageProcessor.XRayAfter);
+
+        public void Undo() => ImageProcessor.Undo();
 
         public void FillBorders()
         {
@@ -109,10 +93,7 @@ namespace XRayImageProcessing.ViewModels
             ImageProcessor.ProcessImage(ImageProcessor.XRayAfter, new BorderFiller());
         }
 
-        public void CompareBitByBit()
-        {
-            ImageProcessor.CompareImages(ImageProcessor.XRayBefore, ImageProcessor.XRayAfter, ImageProcessor.XRayImagesDiff, new BitByBitComparator());
-        }
+        public void CompareBitByBit() => ImageProcessor.CompareImages(ImageProcessor.XRayBefore, ImageProcessor.XRayAfter, ImageProcessor.XRayImagesDiff, new BitByBitComparator());
 
         public void CompareSubimages()
         {

@@ -6,7 +6,7 @@ namespace XRayImageProcessing.Models
     {
         private readonly Random random = new Random();
 
-        public void process(int[] data, int width, int height)
+        public int[] Process(int[] data, int width, int height)
         {
             int radius = random.Next(20, 70);
             int x = random.Next(radius, width - radius);
@@ -25,11 +25,12 @@ namespace XRayImageProcessing.Models
                         int min = (int) (originalColour - 2 * ratio);
                         int max = (int) (originalColour + 2 * ratio);
                         int c = random.Next(min, max);
-                        Console.WriteLine(c);
                         data[(h * width) + w] = -(65536 * c + 256 * c + c);
                     }
                 }
             }
+
+            return data;
         }
     }
 }

@@ -2,6 +2,6 @@
 {
     public interface IProcesor
     {
-        void process(int[] data, int width, int height);
+        int[] Process(int[] data, int width, int height);
     }
 }

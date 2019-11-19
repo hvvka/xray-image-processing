@@ -6,7 +6,7 @@ namespace XRayImageProcessing.Models
     {
         private readonly Random random = new Random();
 
-        public void process(int[] data, int width, int height)
+        public int[] Process(int[] data, int width, int height)
         {
             int size = random.Next(50, 90);
             int x = random.Next(size, width - size);
@@ -21,6 +21,8 @@ namespace XRayImageProcessing.Models
                     data[(h * width) + w] = -(65536 * c + 256 * c + c);
                 }
             }
+
+            return data;
         }
     }
 }

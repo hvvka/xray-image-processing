@@ -84,12 +84,16 @@ namespace XRayImageProcessing.ViewModels
         public void FloodFill()
         {
             FloodFiller._percent = 5;
-
             ImageProcessor.ProcessImage(ImageProcessor.XRayAfter, new FloodFiller());
         }
 
         public void Undo() => ImageProcessor.Undo();
 
+        public void AddFixedSquare()
+        {
+            _imageProcessor.ProcessImage(_imageProcessor.XRayAfter, new SquareAdder(70, 145));
+        }
+        
         public void FillBorders()
         {
             BorderFiller._delta = BorderWidth;
@@ -105,6 +109,11 @@ namespace XRayImageProcessing.ViewModels
             {
                 ImageProcessor.CompareImages(ImageProcessor.XRayBefore, ImageProcessor.XRayAfter, ImageProcessor.XRayImagesDiff, new SubimagesComparator(power));
             }
+        }
+
+        public void DetectFixedSquares()
+        {
+            _imageProcessor.DetectSquares(_imageProcessor.XRayAfter, _imageProcessor.XRayImagesDiff, new SquareDetector(70, 145));
         }
     }
 }

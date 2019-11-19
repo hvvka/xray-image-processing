@@ -17,7 +17,8 @@ namespace XRayImageProcessing.Models
             this.size = size;
             this.color = color;
         }
-        public void process(int[] data, int width, int height)
+        
+        public int[] Process(int[] data, int width, int height)
         {
             Random random = new Random();
             int x = random.Next(size, width - size);
@@ -31,6 +32,7 @@ namespace XRayImageProcessing.Models
             {
                 FillWithFixedColor(x, y, data, width);
             }
+            return data;
         }
 
         private void FillWithSpectralColor(int x, int y, int[] data, int width)

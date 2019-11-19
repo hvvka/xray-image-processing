@@ -6,7 +6,7 @@ namespace XRayImageProcessing.Models
     {
         private readonly Random random = new Random();
 
-        public void process(int[] data, int width, int height)
+        public int[] Process(int[] data, int width, int height)
         {
             int radius = random.Next(20, 70);
             int x = random.Next(radius, width - radius);
@@ -16,16 +16,21 @@ namespace XRayImageProcessing.Models
             {
                 for (int w = 0; w < width; w++)
                 {
+                    int originalColour = data[(h * width) + w];
                     double circle = (Math.Pow(x - w, 2) + Math.Pow(y - h, 2));
                     double r2 = radius * radius;
                     if (circle < r2)
                     {
                         double ratio = circle / r2;
-                        int c = (int)(48 * ratio + 90); // flat darker color spectrum
+                        int min = (int) (originalColour - 2 * ratio);
+                        int max = (int) (originalColour + 2 * ratio);
+                        int c = random.Next(min, max);
                         data[(h * width) + w] = -(65536 * c + 256 * c + c);
                     }
                 }
             }
+
+            return data;
         }
     }
 }

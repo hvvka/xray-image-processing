@@ -5,23 +5,19 @@ using System.IO;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using XRayImageProcessing.Models;
-using XRayImageProcessing.Models;
+using XRayImageProcessing.Models.Procesors;
 
 namespace XRayImageProcessing.ViewModels
 {
     public class ShellViewModel : Screen, INotifyPropertyChanged
     {
-        private ImageProcessor _imageProcessor;
         private string _chosenPath = "default";
-        private string _powerForImageDivision = "20";
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public string PowerForImageDivision
-        {
-            get { return _powerForImageDivision; }
-            set { _powerForImageDivision = value; }
-        }
+        public int BorderWidth { get; set; } = 140;
+        public int PercentCovered { get; set; } = 35;
+        public string PowerForImageDivision { get; set; } = "20";
         public string ChosenPath
         {
             get { return _chosenPath; }
@@ -32,11 +28,7 @@ namespace XRayImageProcessing.ViewModels
             }
         }
 
-        public ImageProcessor ImageProcessor
-        {
-            get { return _imageProcessor; }
-            set { _imageProcessor = value; }
-        }
+        public ImageProcessor ImageProcessor { get; set; }
         public void ChooseFile(object sender, RoutedEventArgs e)
         {
             Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog
@@ -45,7 +37,7 @@ namespace XRayImageProcessing.ViewModels
                 Filter = "Png files (.png)|*.png"
             };
 
-            Nullable<bool> result = openFileDialog.ShowDialog();
+            bool? result = openFileDialog.ShowDialog();
 
             if (result == true)
             {
@@ -62,70 +54,66 @@ namespace XRayImageProcessing.ViewModels
                 Filter = "Png files (.png)|*.png"
             };
 
-            Nullable<bool> result = saveFileDialog.ShowDialog();
+            bool? result = saveFileDialog.ShowDialog();
 
             if (result == true)
             {
                 string path = saveFileDialog.FileName;
-                _imageProcessor.XRayAfter.Save(path);
+                ImageProcessor.XRayAfter.Save(path);
             }
         }
 
         public ShellViewModel()
         {
             // TODO: Relative path
-            ChosenPath = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\Resources\samples\spots.png"));
-            _imageProcessor = new ImageProcessor(new Uri(ChosenPath));
+            ChosenPath = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\Resources\samples\00030636_017.png"));
+            ImageProcessor = new ImageProcessor(new Uri(ChosenPath));
             OpenNewImage(ChosenPath);
         }
 
-        private void OpenNewImage(string path)
+        private void OpenNewImage(string path) => ImageProcessor = new ImageProcessor(new Uri(path), ImageProcessor.XRayBefore, ImageProcessor.XRayAfter, ImageProcessor.XRayImagesDiff);
+
+        private void OnPropertyChanged([CallerMemberName]string caller = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(caller));
+
+        public void InvertColours() => ImageProcessor.ProcessImage(ImageProcessor.XRayAfter, new ImageInverter());
+
+        public void AddCircle() => ImageProcessor.ProcessImage(ImageProcessor.XRayAfter, new CircleAdder());
+
+        public void AddSquare() => ImageProcessor.ProcessImage(ImageProcessor.XRayAfter, new SquareAdder());
+
+        public void FloodFill()
         {
-            _imageProcessor = new ImageProcessor(new Uri(path), _imageProcessor.XRayBefore, _imageProcessor.XRayAfter, _imageProcessor.XRayImagesDiff);
+            FloodFiller._percent = 5;
+            ImageProcessor.ProcessImage(ImageProcessor.XRayAfter, new FloodFiller());
         }
 
-        private void OnPropertyChanged([CallerMemberName]string caller = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(caller));
-        }
-
-        public void InvertColours()
-        {
-            _imageProcessor.ProcessImage(_imageProcessor.XRayAfter, new ImageInverter());
-        }
-
-        public void AddCircle()
-        {
-            _imageProcessor.ProcessImage(_imageProcessor.XRayAfter, new CircleAdder());
-        }
-
-        public void AddSquare()
-        {
-            _imageProcessor.ProcessImage(_imageProcessor.XRayAfter, new SquareAdder());
-        }
+        public void Undo() => ImageProcessor.Undo();
 
         public void AddFixedSquare()
         {
-            _imageProcessor.ProcessImage(_imageProcessor.XRayAfter, new SquareAdder(70, 145));
+            ImageProcessor.ProcessImage(ImageProcessor.XRayAfter, new SquareAdder(70, 145));
+        }
+        
+        public void FillBorders()
+        {
+            BorderFiller._delta = BorderWidth;
+            BorderFiller._percent = PercentCovered;
+            ImageProcessor.ProcessImage(ImageProcessor.XRayAfter, new BorderFiller());
         }
 
-        public void CompareBitByBit()
-        {
-            _imageProcessor.CompareImages(_imageProcessor.XRayBefore, _imageProcessor.XRayAfter, _imageProcessor.XRayImagesDiff, new BitByBitComparator());
-        }
+        public void CompareBitByBit() => ImageProcessor.CompareImages(ImageProcessor.XRayBefore, ImageProcessor.XRayAfter, ImageProcessor.XRayImagesDiff, new BitByBitComparator());
 
         public void CompareSubimages()
         {
-            int power;
-            if (int.TryParse(_powerForImageDivision, out power))
+            if (int.TryParse(PowerForImageDivision, out int power))
             {
-                _imageProcessor.CompareImages(_imageProcessor.XRayBefore, _imageProcessor.XRayAfter, _imageProcessor.XRayImagesDiff, new SubimagesComparator(power));
+                ImageProcessor.CompareImages(ImageProcessor.XRayBefore, ImageProcessor.XRayAfter, ImageProcessor.XRayImagesDiff, new SubimagesComparator(power));
             }
         }
 
         public void DetectFixedSquares()
         {
-            _imageProcessor.DetectSquares(_imageProcessor.XRayAfter, _imageProcessor.XRayImagesDiff, new SquareDetector(70, 145));
+            ImageProcessor.DetectSquares(ImageProcessor.XRayAfter, ImageProcessor.XRayImagesDiff, new SquareDetector(70, 145));
         }
     }
 }

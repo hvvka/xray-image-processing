@@ -87,10 +87,8 @@ namespace XRayImageProcessing.Models
         public void Undo()
         {
             if (_imageHistory.Count > 0) {
-                Console.WriteLine("Undo");
                 _xRayAfter.XRayBitmap = _imageHistory.Pop();
             }
-            Console.WriteLine("not Undo");
         }
 
         public void CompareImages(XRayImage xRayImageBefore, XRayImage xRayImageAfter, XRayImage imagesDiff, IComparator comparator)

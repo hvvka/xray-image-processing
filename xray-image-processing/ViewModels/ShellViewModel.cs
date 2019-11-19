@@ -15,8 +15,8 @@ namespace XRayImageProcessing.ViewModels
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public int BorderWidth { get; set; } = 100;
-        public int PercentCovered { get; set; } = 25;
+        public int BorderWidth { get; set; } = 140;
+        public int PercentCovered { get; set; } = 35;
         public string PowerForImageDivision { get; set; } = "20";
         public string ChosenPath
         {
@@ -81,7 +81,12 @@ namespace XRayImageProcessing.ViewModels
 
         public void AddSquare() => ImageProcessor.ProcessImage(ImageProcessor.XRayAfter, new SquareAdder());
 
-        public void FloodFill() => ImageProcessor.FloodFill(ImageProcessor.XRayAfter);
+        public void FloodFill()
+        {
+            FloodFiller._percent = 5;
+
+            ImageProcessor.ProcessImage(ImageProcessor.XRayAfter, new FloodFiller());
+        }
 
         public void Undo() => ImageProcessor.Undo();
 
@@ -89,7 +94,6 @@ namespace XRayImageProcessing.ViewModels
         {
             BorderFiller._delta = BorderWidth;
             BorderFiller._percent = PercentCovered;
-
             ImageProcessor.ProcessImage(ImageProcessor.XRayAfter, new BorderFiller());
         }
 

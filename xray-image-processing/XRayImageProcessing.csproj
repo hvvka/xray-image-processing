@@ -78,6 +78,7 @@
     <Compile Include="Models\Comparators\BitByBitComparator.cs" />
     <Compile Include="Models\Comparators\IComparator.cs" />
     <Compile Include="Models\Comparators\SubimagesComparator.cs" />
+    <Compile Include="Models\Procesors\FloodFiller.cs" />
     <Compile Include="Models\Procesors\BorderFiller.cs" />
     <Compile Include="Models\Procesors\SquareAdder.cs" />
     <Compile Include="Models\Procesors\CircleAdder.cs" />

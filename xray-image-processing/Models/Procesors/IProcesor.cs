@@ -1,7 +1,9 @@
-﻿namespace XRayImageProcessing.Models
+﻿using System.Collections.Generic;
+
+namespace XRayImageProcessing.Models
 {
     public interface IProcesor
     {
-        void process(List<int> data, int width, int height);
+        List<int> Process(List<int> data, int width, int height);
     }
 }

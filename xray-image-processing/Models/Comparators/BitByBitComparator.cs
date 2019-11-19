@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace XRayImageProcessing.Models
 {
     class BitByBitComparator : IComparator
     {
-        public void compare(int[] dataBefore, int[] dataAfter, int[] dataDiff, int width, int height)
+        public void Compare(IList<int> dataBefore, IList<int> dataAfter, IList<int> dataDiff, int width, int height)
         {
             for (int w = 0; w < width; w++)
             {

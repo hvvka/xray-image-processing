@@ -1,16 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace XRayImageProcessing.Models
 {
     class SubimagesComparator : IComparator
     {
-        private int _power;
+        private readonly int _power;
         public SubimagesComparator(int power)
         {
             _power = power;
         }
 
-        private int ComputePercentageOfDifferentPixels(int[] dataBefore, int[] dataAfter, int a, int b, int c, int d, int width)
+        private int ComputePercentageOfDifferentPixels(IList<int> dataBefore, IList<int> dataAfter, int a, int b, int c, int d, int width)
         {
             double differentPixels = 0;
             for (int w = a; w < b; w++)
@@ -28,7 +29,7 @@ namespace XRayImageProcessing.Models
             return Convert.ToInt32(differentPixels * 100 / totalPixels);
         }
 
-        private void FillRectangle(int[] dataDiff, int a, int b, int c, int d, int color, int width)
+        private void FillRectangle(IList<int> dataDiff, int a, int b, int c, int d, int color, int width)
         {
             string hexColor = Convert.ToInt32(155 + Convert.ToDouble(color)).ToString("X");
             Console.WriteLine(hexColor);
@@ -41,14 +42,14 @@ namespace XRayImageProcessing.Models
             }
         }
 
-        public void compare(int[] dataBefore, int[] dataAfter, int[] dataDiff, int width, int height)
+        public void Compare(IList<int> dataBefore, IList<int> dataAfter, IList<int> dataDiff, int width, int height)
         {
             int widthOffset = width / _power;
             int heightOffset = height / _power;
 
-            for (int w = 0; w < width; w = w + widthOffset)
+            for (int w = 0; w < width; w += widthOffset)
             {
-                for (int h = 0; h < height; h = h + heightOffset)
+                for (int h = 0; h < height; h += heightOffset)
                 {
                     int a = w;
                     int b = w + widthOffset;

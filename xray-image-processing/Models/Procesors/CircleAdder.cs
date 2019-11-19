@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace XRayImageProcessing.Models
 {
@@ -6,7 +7,7 @@ namespace XRayImageProcessing.Models
     {
         private readonly Random random = new Random();
 
-        public void process(List<int> data, int width, int height)
+        public List<int> Process(List<int> data, int width, int height)
         {
             int radius = random.Next(20, 70);
             int x = random.Next(radius, width - radius);
@@ -30,6 +31,8 @@ namespace XRayImageProcessing.Models
                     }
                 }
             }
+
+            return data;
         }
     }
 }

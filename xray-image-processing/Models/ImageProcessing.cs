@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows;
 using System.Windows.Media;
@@ -60,14 +61,14 @@ namespace XRayImageProcessing.Models
 
             int height = modifiedImage.PixelHeight;
             int width = modifiedImage.PixelWidth;
-            int[] pixelData = new int[width * height];
+            List<int> pixelData = new List<int>(height * width);
             int widthInByte = 4 * width;
 
-            modifiedImage.CopyPixels(pixelData, widthInByte, 0);
+            modifiedImage.CopyPixels(pixelData.ToArray(), widthInByte, 0);
 
-            procesor.process(pixelData, width, height); // TODO: return List
+            var updatedPixelData = procesor.Process(pixelData, width, height); // TODO: return List
 
-            modifiedImage.WritePixels(new Int32Rect(0, 0, width, height), pixelData, widthInByte, 0);
+            modifiedImage.WritePixels(new Int32Rect(0, 0, width, height), updatedPixelData.ToArray(), widthInByte, 0);
 
             xRayImage.XRayBitmap = modifiedImage.ToBitmapImage();
         }
@@ -115,18 +116,18 @@ namespace XRayImageProcessing.Models
             int width = imageAfter.PixelWidth;
             int height = imageAfter.PixelHeight;
 
-            int[] pixelDataBefore = new int[width * height];
-            int[] pixelDataAfter = new int[width * height];
-            int[] pixelDataDiff = new int[width * height];
+            List<int> pixelDataBefore = new List<int>();
+            List<int> pixelDataAfter = new List<int>();
+            List<int> pixelDataDiff = new List<int>();
             int widthInByte = 4 * imageAfter.PixelWidth;
 
-            imageBeforeWritable.CopyPixels(pixelDataBefore, widthInByte, 0);
-            imageAfterWritable.CopyPixels(pixelDataAfter, widthInByte, 0);
-            imagesDiffWritable.CopyPixels(pixelDataDiff, widthInByte, 0);
+            imageBeforeWritable.CopyPixels(pixelDataBefore.ToArray(), widthInByte, 0);
+            imageAfterWritable.CopyPixels(pixelDataAfter.ToArray(), widthInByte, 0);
+            imagesDiffWritable.CopyPixels(pixelDataDiff.ToArray(), widthInByte, 0);
 
-            comparator.compare(pixelDataBefore, pixelDataAfter, pixelDataDiff, width, height);
+            comparator.Compare(pixelDataBefore, pixelDataAfter, pixelDataDiff, width, height);
 
-            imagesDiffWritable.WritePixels(new Int32Rect(0, 0, width, height), pixelDataDiff, widthInByte, 0);
+            imagesDiffWritable.WritePixels(new Int32Rect(0, 0, width, height), pixelDataDiff.ToArray(), widthInByte, 0);
             imagesDiff.XRayBitmap = imagesDiffWritable.ToBitmapImage();
         }
     }

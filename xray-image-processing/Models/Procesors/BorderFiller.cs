@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 
 namespace XRayImageProcessing.Models.Procesors
 {
@@ -9,9 +11,9 @@ namespace XRayImageProcessing.Models.Procesors
 
         public static int _percent = 25;
 
-        public void process(int[] data, int width, int height)
+        public List<int> Process(List<int> data, int width, int height)
         {
-            List<int> borders = new List<int>();
+            IList<int> borders = new List<int>();
 
             IterateBitmap(height, width, (h, w) =>
             {
@@ -21,8 +23,7 @@ namespace XRayImageProcessing.Models.Procesors
                 }
             });
 
-            // Array.Sort(borders);
-            borders.Sort();
+            borders = borders.OrderBy(x => x).ToList();
             
             int limit = borders[_percent * (2 * (_delta * width) + 2 * (_delta * (height - 2 * _delta))) / 100];
 
@@ -33,6 +34,8 @@ namespace XRayImageProcessing.Models.Procesors
                     data[(h * width) + w] = Color.Black.ToArgb();
                 }
             });
+
+            return data;
         }
 
         private bool IsBorder(int h, int w, int width, int height) =>

@@ -1,15 +1,14 @@
-﻿namespace XRayImageProcessing.Models
+﻿using System.Collections.Generic;
+using System.Linq;
+
+namespace XRayImageProcessing.Models
 {
     class ImageInverter : IProcesor
     {
-        public IEnumerable<int> process(IEnumerable<int> data, int width, int height)
+        public List<int> Process(List<int> data, int width, int height)
         {
-            var result = data.Select(x => x^0x00ffffff);
+            var result = data.Select(x => x^0x00ffffff).ToList();
             return result;
-            // for (int i = 0; i < data.Length; i++)
-            // {
-            //     data[i] ^= 0x00ffffff;
-            // }
         }
     }
 }

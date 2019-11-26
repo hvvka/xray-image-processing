@@ -81,6 +81,7 @@
     <Compile Include="Models\Processors\FloodFiller.cs" />
     <Compile Include="Models\Processors\BorderFiller.cs" />
     <Compile Include="Models\Detectors\SquareDetector.cs" />
+    <Compile Include="Models\Processors\LungsResection.cs" />
     <Compile Include="Models\Processors\SquareAdder.cs" />
     <Compile Include="Models\Processors\CircleAdder.cs" />
     <Compile Include="Models\Processors\ImageInverter.cs" />

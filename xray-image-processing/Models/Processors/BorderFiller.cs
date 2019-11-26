@@ -17,14 +17,14 @@ namespace XRayImageProcessing.Models.Processors
             {
                 if (IsBorder(h, w, width, height))
                 {
-                    borders[(h * width) + w] = data[(h * width) + w];
+                    borders[h * width + w] = data[h * width + w];
                 }
             });
 
             Array.Sort(borders);
             var limit = borders[Percent * (2 * (Delta * width) + 2 * (Delta * (height - 2 * Delta))) / 100];
 
-            IterateBitmap(height, width, condition: (h, w) =>
+            IterateBitmap(height, width, (h, w) =>
             {
                 if (data[h * width + w] < limit && IsBorder(h, w, width, height))
                 {

@@ -17,14 +17,14 @@ namespace XRayImageProcessing.Models.Processors
                 for (var w = 0; w < width; w++)
                 {
                     var originalColor = data[h * width + w];
-                    var circle = (Math.Pow(x - w, 2) + Math.Pow(y - h, 2));
+                    var circle = Math.Pow(x - w, 2) + Math.Pow(y - h, 2);
                     double r2 = radius * radius;
                     if (!(circle < r2)) continue;
                     var ratio = circle / r2;
                     var min = (int) (originalColor - 2 * ratio);
                     var max = (int) (originalColor + 2 * ratio);
                     var c = _random.Next(min, max);
-                    data[(h * width) + w] = -(65536 * c + 256 * c + c);
+                    data[h * width + w] = -(65536 * c + 256 * c + c);
                 }
             }
 

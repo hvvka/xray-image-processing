@@ -78,6 +78,8 @@ namespace XRayImageProcessing.ViewModels
         public void AddCircle() => ImageProcessor.ProcessImage(ImageProcessor.XRayAfter, new CircleAdder());
 
         public void AddSquare() => ImageProcessor.ProcessImage(ImageProcessor.XRayAfter, new SquareAdder());
+        
+        public void CutLungs() => ImageProcessor.ProcessImage(ImageProcessor.XRayAfter, new LungsResection());
 
         public void FloodFill()
         {

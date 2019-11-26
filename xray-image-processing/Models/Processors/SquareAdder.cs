@@ -49,7 +49,7 @@ namespace XRayImageProcessing.Models.Processors
             }
         }
 
-        private void FillWithFixedColor(int x, int y, int[] data, int width)
+        private void FillWithFixedColor(int x, int y, IList<int> data, int width)
         {
             var c = _color.GetValueOrDefault();
             for (var h = y; h < y + _size; h++)

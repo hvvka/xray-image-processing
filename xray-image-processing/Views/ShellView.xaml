@@ -54,6 +54,8 @@
             <TextBox Text="{Binding Path=BorderWidth}" Height="auto" Margin="10,10,10,10" TextWrapping="Wrap" VerticalAlignment="Top" Width="auto" ToolTip="Border width"/>
             <TextBox Text="{Binding Path=PercentCovered}" Height="auto" Margin="10,10,10,10" TextWrapping="Wrap" VerticalAlignment="Top" Width="auto" ToolTip="Percent covered"/>
         </StackPanel>
+        <Button x:Name="CutLungs" Grid.Row="8" Grid.Column="2" Margin="20,10,20,10">Cut lungs</Button>
+        
         <Button x:Name="DetectFixedSquares" Grid.Row="4" Grid.Column="3" Margin="20,10,20,10">Detect fixed squares</Button>
         <Button x:Name="CompareBitByBit" Grid.Row="5" Grid.Column="3"  Margin="20,10,20,10">Compare bit by bit</Button>
         <StackPanel Grid.Row="6" Grid.Column="3" Orientation="Horizontal">

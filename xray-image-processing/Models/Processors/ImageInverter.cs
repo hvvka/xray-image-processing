@@ -1,10 +1,10 @@
-﻿namespace XRayImageProcessing.Models
+﻿namespace XRayImageProcessing.Models.Processors
 {
-    class ImageInverter : IProcesor
+    internal class ImageInverter : IProcessor
     {
         public int[] Process(int[] data, int width, int height)
         {
-            for (int i = 0; i < data.Length; i++)
+            for (var i = 0; i < data.Length; i++)
             {
                 data[i] ^= 0x00ffffff;
             }

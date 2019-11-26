@@ -13,11 +13,11 @@ namespace XRayImageProcessing.Models
 
         public BitmapImage XRayBitmap
         {
-            get { return _xRayBitmap; }
+            get => _xRayBitmap;
             set
             {
                 _xRayBitmap = value;
-                OnPropertyChanged("XRayBitmap");
+                OnPropertyChanged();
             }
         }
 

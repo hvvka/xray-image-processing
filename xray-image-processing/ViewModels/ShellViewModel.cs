@@ -5,7 +5,9 @@ using System.IO;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using XRayImageProcessing.Models;
-using XRayImageProcessing.Models.Procesors;
+using XRayImageProcessing.Models.Comparators;
+using XRayImageProcessing.Models.Detectors;
+using XRayImageProcessing.Models.Processors;
 
 namespace XRayImageProcessing.ViewModels
 {
@@ -13,54 +15,50 @@ namespace XRayImageProcessing.ViewModels
     {
         private string _chosenPath = "default";
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public override event PropertyChangedEventHandler PropertyChanged;
 
         public int BorderWidth { get; set; } = 140;
         public int PercentCovered { get; set; } = 35;
         public string PowerForImageDivision { get; set; } = "20";
         public string ChosenPath
         {
-            get { return _chosenPath; }
+            get => _chosenPath;
             set
             {
                 _chosenPath = value;
-                OnPropertyChanged("ChosenPath");
+                OnPropertyChanged();
             }
         }
 
         public ImageProcessor ImageProcessor { get; set; }
         public void ChooseFile(object sender, RoutedEventArgs e)
         {
-            Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog
+            var openFileDialog = new Microsoft.Win32.OpenFileDialog
             {
                 DefaultExt = ".png",
                 Filter = "Png files (.png)|*.png"
             };
 
-            bool? result = openFileDialog.ShowDialog();
+            var result = openFileDialog.ShowDialog();
 
-            if (result == true)
-            {
-                ChosenPath = openFileDialog.FileName;
-                OpenNewImage(ChosenPath);
-            }
+            if (result != true) return;
+            ChosenPath = openFileDialog.FileName;
+            OpenNewImage(ChosenPath);
         }
         public void SaveFile(object sender, RoutedEventArgs e)
         {
-            Microsoft.Win32.SaveFileDialog saveFileDialog = new Microsoft.Win32.SaveFileDialog()
+            var saveFileDialog = new Microsoft.Win32.SaveFileDialog()
             {
                 FileName = Path.GetFileNameWithoutExtension(_chosenPath) + "_" + DateTime.Now.ToString("yyyy-dd-MM_HH-mm-ss") + ".png",
                 DefaultExt = ".png",
                 Filter = "Png files (.png)|*.png"
             };
 
-            bool? result = saveFileDialog.ShowDialog();
+            var result = saveFileDialog.ShowDialog();
 
-            if (result == true)
-            {
-                string path = saveFileDialog.FileName;
-                ImageProcessor.XRayAfter.Save(path);
-            }
+            if (result != true) return;
+            var path = saveFileDialog.FileName;
+            ImageProcessor.XRayAfter.Save(path);
         }
 
         public ShellViewModel()
@@ -75,7 +73,7 @@ namespace XRayImageProcessing.ViewModels
 
         private void OnPropertyChanged([CallerMemberName]string caller = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(caller));
 
-        public void InvertColours() => ImageProcessor.ProcessImage(ImageProcessor.XRayAfter, new ImageInverter());
+        public void InvertColors() => ImageProcessor.ProcessImage(ImageProcessor.XRayAfter, new ImageInverter());
 
         public void AddCircle() => ImageProcessor.ProcessImage(ImageProcessor.XRayAfter, new CircleAdder());
 
@@ -83,7 +81,7 @@ namespace XRayImageProcessing.ViewModels
 
         public void FloodFill()
         {
-            FloodFiller._percent = 5;
+            FloodFiller.Percent = 5;
             ImageProcessor.ProcessImage(ImageProcessor.XRayAfter, new FloodFiller());
         }
 
@@ -96,8 +94,8 @@ namespace XRayImageProcessing.ViewModels
         
         public void FillBorders()
         {
-            BorderFiller._delta = BorderWidth;
-            BorderFiller._percent = PercentCovered;
+            BorderFiller.Delta = BorderWidth;
+            BorderFiller.Percent = PercentCovered;
             ImageProcessor.ProcessImage(ImageProcessor.XRayAfter, new BorderFiller());
         }
 

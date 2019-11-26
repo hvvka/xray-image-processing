@@ -1,21 +1,18 @@
-﻿using System;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
-using System.Windows;
-using System.Windows.Interop;
 using System.Windows.Media.Imaging;
 
-namespace XRayImageProcessing.Models
+namespace XRayImageProcessing.Models.Util
 {
     public static class ImageUtils
     {
         public static BitmapImage ToBitmapImage(this WriteableBitmap wbm)
         {
-            BitmapImage bitmapImage = new BitmapImage();
-            using (MemoryStream stream = new MemoryStream())
+            var bitmapImage = new BitmapImage();
+            using (var stream = new MemoryStream())
             {
-                PngBitmapEncoder encoder = new PngBitmapEncoder();
+                var encoder = new PngBitmapEncoder();
                 encoder.Frames.Add(BitmapFrame.Create(wbm));
                 encoder.Save(stream);
                 bitmapImage.BeginInit();
@@ -30,7 +27,7 @@ namespace XRayImageProcessing.Models
         public static Bitmap BitmapImage2Bitmap(BitmapImage bitmapImage)
         {
             // BitmapImage bitmapImage = new BitmapImage(new Uri("../Images/test.png", UriKind.Relative));
-            using (MemoryStream outStream = new MemoryStream())
+            using (var outStream = new MemoryStream())
             {
                 BitmapEncoder enc = new BmpBitmapEncoder();
                 enc.Frames.Add(BitmapFrame.Create(bitmapImage));

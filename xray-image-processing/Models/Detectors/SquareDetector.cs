@@ -1,23 +1,24 @@
 ﻿using System;
-namespace XRayImageProcessing.Models
+using System.Collections.Generic;
+
+namespace XRayImageProcessing.Models.Detectors
 {
     public class SquareDetector
     {
-        private readonly int color;
-        private readonly int sideLength;
-
+        private readonly int _color;
+        private readonly int _sideLength;
 
         public SquareDetector(int sideLength, int color)
         {
-            this.sideLength = sideLength;
-            this.color = color;
+            _sideLength = sideLength;
+            _color = color;
         }
 
-        private void DrawDetectedSquare(int[] dataDiff, int width, int height, int fullWidth)
+        private void DrawDetectedSquare(IList<int> dataDiff, int width, int height, int fullWidth)
         {
-            for (int w = width; w < width + sideLength; w++)
+            for (var w = width; w < width + _sideLength; w++)
             {
-                for (int h = height; h < height + sideLength; h++)
+                for (var h = height; h < height + _sideLength; h++)
                 {
                     dataDiff[(h * fullWidth) + w] = Convert.ToInt32("0xFFFF0000", 16);
                 }
@@ -25,22 +26,22 @@ namespace XRayImageProcessing.Models
         }
         private bool DetectSquare(int[] dataDiff, int width, int height, int fullWidth)
         {
+            var detectedSquare = true;
 
-            bool detectedSquare = true;
-
-            for (int squareWidth = width; squareWidth < width + sideLength; squareWidth++)
+            for (var squareWidth = width; squareWidth < width + _sideLength; squareWidth++)
             {
                 if (!detectedSquare)
                 {
                     break;
                 }
-                for (int squareHeight = height; squareHeight < height + sideLength; squareHeight++)
+                for (var squareHeight = height; squareHeight < height + _sideLength; squareHeight++)
                 {
-                    if ((dataDiff[(squareHeight * fullWidth) + squareWidth] != -(65536 * color + 256 * color + color)) && (dataDiff[(squareHeight * fullWidth) + squareWidth] != Convert.ToInt32("0xFFFF0000", 16)))
-                    {
-                        detectedSquare = false;
-                        break;
-                    }
+                    if (dataDiff[squareHeight * fullWidth + squareWidth] ==
+                        -(65536 * _color + 256 * _color + _color) ||
+                        dataDiff[squareHeight * fullWidth + squareWidth] == Convert.ToInt32("0xFFFF0000", 16))
+                        continue;
+                    detectedSquare = false;
+                    break;
                 }
             }
             return detectedSquare;
@@ -48,11 +49,11 @@ namespace XRayImageProcessing.Models
 
         public void Detect(int[] dataDiff, int width, int height)
         {
-            for (int w = 0; w < width - sideLength; w++)
+            for (var w = 0; w < width - _sideLength; w++)
             {
-                for (int h = 0; h < height - sideLength; h++)
+                for (var h = 0; h < height - _sideLength; h++)
                 {
-                    bool detectedSquare = DetectSquare(dataDiff, w, h, width);
+                    var detectedSquare = DetectSquare(dataDiff, w, h, width);
 
                     if (detectedSquare)
                     {

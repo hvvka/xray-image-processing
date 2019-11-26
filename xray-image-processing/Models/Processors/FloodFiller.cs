@@ -1,19 +1,19 @@
 ﻿using System;
 using System.Drawing;
 
-namespace XRayImageProcessing.Models.Procesors
+namespace XRayImageProcessing.Models.Processors
 {
-    class FloodFiller : IProcesor
+    internal class FloodFiller : IProcessor
     {
-        public static int _percent = 25;
+        public static int Percent = 25;
 
         public int[] Process(int[] data, int width, int height)
         {
-            int[] borders = new int[data.Length];
+            var borders = new int[data.Length];
             data.CopyTo(borders, 0);
 
             Array.Sort(borders);
-            int limit = borders[_percent * width * height / 100];
+            var limit = borders[Percent * width * height / 100];
 
             IterateBitmap(height, width, (h, w) =>
             {
@@ -28,9 +28,9 @@ namespace XRayImageProcessing.Models.Procesors
 
         private void IterateBitmap(int height, int width, Action<int, int> condition)
         {
-            for (int h = 0; h < height; h++)
+            for (var h = 0; h < height; h++)
             {
-                for (int w = 0; w < width; w++)
+                for (var w = 0; w < width; w++)
                 {
                     condition(h, w);
                 }

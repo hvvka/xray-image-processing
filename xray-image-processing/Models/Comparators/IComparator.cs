@@ -1,7 +1,7 @@
-﻿namespace XRayImageProcessing.Models
+﻿namespace XRayImageProcessing.Models.Comparators
 {
     public interface IComparator
     {
-        void compare(int[] dataBefore, int[] dataAfter, int[] dataDiff, int width, int height);
+        void Compare(int[] dataBefore, int[] dataAfter, int[] dataDiff, int width, int height);
     }
 }

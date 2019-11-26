@@ -17,16 +17,16 @@ namespace XRayImageProcessing.Models.Processors
 
             IterateBitmap(height, width, (h, w) =>
             {
-                if (data[(h * width) + w] < limit)
+                if (data[h * width + w] < limit)
                 {
-                    data[(h * width) + w] = Color.Transparent.ToArgb();
+                    data[h * width + w] = Color.Transparent.ToArgb();
                 }
             });
 
             return data;
         }
 
-        private void IterateBitmap(int height, int width, Action<int, int> condition)
+        private static void IterateBitmap(int height, int width, Action<int, int> condition)
         {
             for (var h = 0; h < height; h++)
             {

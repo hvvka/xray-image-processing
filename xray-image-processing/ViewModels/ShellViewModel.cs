@@ -11,7 +11,7 @@ using XRayImageProcessing.Models.Processors;
 
 namespace XRayImageProcessing.ViewModels
 {
-    public class ShellViewModel : Screen, INotifyPropertyChanged
+    public class ShellViewModel : Screen
     {
         private string _chosenPath = "default";
 

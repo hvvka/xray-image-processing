@@ -1,4 +1,7 @@
-﻿namespace XRayImageProcessing.Models.Processors
+﻿using System;
+using System.Drawing;
+
+namespace XRayImageProcessing.Models.Processors
 {
     internal class ImageInverter : IProcessor
     {
@@ -6,7 +9,8 @@
         {
             for (var i = 0; i < data.Length; i++)
             {
-                data[i] ^= 0x00ffffff;
+                if (data[i] != Color.Transparent.ToArgb())
+                    data[i] ^= 0x00ffffff;
             }
             return data;
         }

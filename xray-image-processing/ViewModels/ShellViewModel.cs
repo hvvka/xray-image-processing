@@ -17,9 +17,9 @@ namespace XRayImageProcessing.ViewModels
 
         public override event PropertyChangedEventHandler PropertyChanged;
 
-        public int BorderWidth { get; set; } = 140;
-        public int PercentCovered { get; set; } = 35;
-        public int SquareNumberBorder { get; set; } = 256;
+        public int BorderWidth { get; set; } = 150;
+        public int PercentCovered { get; set; } = 40;
+        public int SquareNumberBorder { get; set; } = 128;
         public string PowerForImageDivision { get; set; } = "20";
         public string ChosenPath
         {

@@ -19,6 +19,7 @@ namespace XRayImageProcessing.ViewModels
 
         public int BorderWidth { get; set; } = 140;
         public int PercentCovered { get; set; } = 35;
+        public int SquareNumberBorder { get; set; } = 256;
         public string PowerForImageDivision { get; set; } = "20";
         public string ChosenPath
         {
@@ -79,7 +80,11 @@ namespace XRayImageProcessing.ViewModels
 
         public void AddSquare() => ImageProcessor.ProcessImage(ImageProcessor.XRayAfter, new SquareAdder());
         
-        public void CutLungs() => ImageProcessor.ProcessImage(ImageProcessor.XRayAfter, new LungsResection());
+        public void CutLungs()
+        {
+            LungsResection.SquareNumberBorder = SquareNumberBorder;
+            ImageProcessor.ProcessImage(ImageProcessor.XRayAfter, new LungsResection());
+        }
 
         public void FloodFill()
         {

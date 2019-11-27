@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Numerics;
 
 namespace XRayImageProcessing.Models.Processors
 {
     internal class LungsResection : IProcessor
     {
         public static int SquareNumberBorder = 256;
-        public static int SquareNumber = (int) Math.Pow(SquareNumberBorder, 2);
+        private static int SquareNumber = (int) Math.Pow(SquareNumberBorder, 2);
 
         public int[] Process(int[] data, int width, int height)
         {
@@ -46,25 +48,34 @@ namespace XRayImageProcessing.Models.Processors
 
             FloodFiller.IterateBitmap(SquareNumberBorder, SquareNumberBorder, (y, x) =>
             {
-                var averageColor = 0;
+                BigInteger averageRed = 0;
+                BigInteger averageBlue = 0;
+                BigInteger averageGreen = 0;
                 for (var h = y * squareHeight; h < (y + 1) * squareHeight; h++)
                 {
                     for (var w = x * squareWidth; w < (x + 1) * squareWidth; w++)
                     {
-                        averageColor += lung[h * width + w];
+                        var color = lung[h * width + w];
+                        averageRed += Color.FromArgb(color).R;
+                        averageBlue += Color.FromArgb(color).B;
+                        averageGreen += Color.FromArgb(color).G;
                     }
                 }
-                averageColor /= squareHeight * squareWidth;
-                Console.WriteLine($"Square ({x}, {y}): {averageColor}");
-                squaredLung[y * SquareNumberBorder + x] = averageColor;
+                averageRed /= squareHeight * squareWidth;
+                averageBlue /= squareHeight * squareWidth;
+                averageGreen /= squareHeight * squareWidth;
+                var averageColor = Color.FromArgb(255, (int) averageRed, (int) averageGreen, (int) averageBlue);
 
-                for (var h = y * squareHeight; h < (y + 1) * squareHeight; h++)
-                {
-                    for (var w = x * squareWidth; w < (x + 1) * squareWidth; w++)
-                    {
-                        extendedSquaredLungs[h * width + w] = averageColor;
-                    }
-                }
+                Console.WriteLine($"Square ({x}, {y}): {averageColor}");
+                squaredLung[y * SquareNumberBorder + x] = averageColor.ToArgb();
+
+                //for (var h = y * squareHeight; h < (y + 1) * squareHeight; h++)
+                //{
+                //    for (var w = x * squareWidth; w < (x + 1) * squareWidth; w++)
+                //    {
+                //        extendedSquaredLungs[h * width + w] = averageColor;
+                //    }
+                //}
             });
             return squaredLung;
         }

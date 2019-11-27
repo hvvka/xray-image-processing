@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 
 namespace XRayImageProcessing.Models.Processors
 {
@@ -23,17 +24,16 @@ namespace XRayImageProcessing.Models.Processors
             BorderFiller.Delta = 180;
             BorderFiller.Percent = 45;
             var noBorder = new BorderFiller().Process(finalData, width, height);
-            //var desquaredLungs = DesquareData(data, noBorder, width, height);
-            return noBorder;
+            var desquaredLungs = DesquareData(data, noBorder, width, height);
+            return desquaredLungs;
         }
 
-        private int[] DesquareData(int[] originalData, int[] noBorder, int width, int height)
+        private int[] DesquareData(IReadOnlyList<int> originalData, IReadOnlyList<int> noBorder, int width, int height)
         {
-            var lungs = new int[originalData.Length];
+            var lungs = Enumerable.Repeat(Color.Transparent.ToArgb(), originalData.Count).ToArray();
             FloodFiller.IterateBitmap(height, width, (h, w) =>
             {
-                if (noBorder[h * width + w] != Color.Transparent.ToArgb() ||
-                    noBorder[h * width + w] != Color.White.ToArgb())
+                if (noBorder[h * width + w] != Color.Transparent.ToArgb())
                 {
                     lungs[h * width + w] = originalData[h * width + w];
                 }
@@ -41,7 +41,7 @@ namespace XRayImageProcessing.Models.Processors
             return lungs;
         }
 
-        private static int[] GetExpandedSquaredData(int[] squaredData, int width, int height)
+        private static int[] GetExpandedSquaredData(IReadOnlyList<int> squaredData, int width, int height)
         {
             var expandedSquaredData = new int[width * height];
             var squareWidth = width / SquareNumberBorder;

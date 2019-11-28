@@ -8,11 +8,12 @@ namespace XRayImageProcessing.Models.Processors
     internal class LungsResection : IProcessor
     {
         public static int SquareNumberBorder = 128;
+
         private static readonly int SquareNumber = (int) Math.Pow(SquareNumberBorder, 2);
 
         public int[] Process(int[] data, int width, int height)
         {
-            var lungs = new int[data.Length]; 
+            var lungs = new int[data.Length];
             Array.Copy(data, 0, lungs, 0, data.Length);
             var squaredData = GetSquaredData(lungs, width, height);
             var expandedSquaredData = GetExpandedSquaredData(squaredData, width, height);
@@ -57,7 +58,6 @@ namespace XRayImageProcessing.Models.Processors
 
         private static int[] GetSquaredData(IReadOnlyList<int> lung, int width, int height)
         {
-            //var extendedSquaredLungs = new int[lung.Count];
             var squaredLung = new int[SquareNumber];
             var squareWidth = width / SquareNumberBorder;
             var squareHeight = height / SquareNumberBorder;
@@ -84,16 +84,7 @@ namespace XRayImageProcessing.Models.Processors
                 averageGreen /= squareHeight * squareWidth;
                 var averageColor = Color.FromArgb(255, averageRed, averageGreen, averageBlue);
 
-                //Console.WriteLine($"Square ({x}, {y}): {averageColor}");
                 squaredLung[y * SquareNumberBorder + x] = averageColor.ToArgb();
-
-                //for (var h = y * squareHeight; h < (y + 1) * squareHeight; h++)
-                //{
-                //    for (var w = x * squareWidth; w < (x + 1) * squareWidth; w++)
-                //    {
-                //        extendedSquaredLungs[h * width + w] = averageColor;
-                //    }
-                //}
             });
             return squaredLung;
         }

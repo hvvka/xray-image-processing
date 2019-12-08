@@ -3,15 +3,19 @@ using System.Collections.Generic;
 
 namespace XRayImageProcessing.Models.Detectors
 {
-    public class SquareDetector
+    internal class SquareDetector : IDetector
     {
         private readonly int _color;
         private readonly int _sideLength;
+        private readonly double _thresholdPercentage;
+        private readonly int _maxFalsePixels;
 
-        public SquareDetector(int sideLength, int color)
+        public SquareDetector(int sideLength, int color, double thresholdPercentage)
         {
             _sideLength = sideLength;
             _color = color;
+            _thresholdPercentage = thresholdPercentage;
+            _maxFalsePixels = Convert.ToInt32(0.01 * (100 - _thresholdPercentage) * _sideLength * _sideLength);
         }
 
         private void DrawDetectedSquare(IList<int> dataDiff, int width, int height, int fullWidth)
@@ -24,9 +28,10 @@ namespace XRayImageProcessing.Models.Detectors
                 }
             }
         }
-        private bool DetectSquare(int[] dataDiff, int width, int height, int fullWidth)
+        private bool DetectSquare(IList<int> dataAfter, int width, int height, int fullWidth)
         {
             var detectedSquare = true;
+            var falsePixels = 0;
 
             for (var squareWidth = width; squareWidth < width + _sideLength; squareWidth++)
             {
@@ -34,28 +39,36 @@ namespace XRayImageProcessing.Models.Detectors
                 {
                     break;
                 }
+
                 for (var squareHeight = height; squareHeight < height + _sideLength; squareHeight++)
                 {
-                    if (dataDiff[squareHeight * fullWidth + squareWidth] ==
-                        -(65536 * _color + 256 * _color + _color) ||
-                        dataDiff[squareHeight * fullWidth + squareWidth] == Convert.ToInt32("0xFFFF0000", 16))
+                    if (dataAfter[squareHeight * fullWidth + squareWidth] ==
+                        -(65536 * _color + 256 * _color + _color))
+                    {
                         continue;
-                    detectedSquare = false;
-                    break;
+                    }
+                    else
+                    {
+                        falsePixels++;
+
+                        if (falsePixels > _maxFalsePixels)
+                        {
+                            detectedSquare = false;
+                            break;
+                        }
+                    }
                 }
             }
             return detectedSquare;
         }
 
-        public void Detect(int[] dataDiff, int width, int height)
+        public void Detect(IList<int> dataAfter, IList<int> dataDiff, int width, int height)
         {
             for (var w = 0; w < width - _sideLength; w++)
             {
                 for (var h = 0; h < height - _sideLength; h++)
                 {
-                    var detectedSquare = DetectSquare(dataDiff, w, h, width);
-
-                    if (detectedSquare)
+                    if (DetectSquare(dataAfter, w, h, width))
                     {
                         DrawDetectedSquare(dataDiff, w, h, width);
                     }

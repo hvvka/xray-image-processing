@@ -86,7 +86,8 @@ namespace XRayImageProcessing.Models
 
         public void Undo()
         {
-            if (ImageHistory.Count > 0) {
+            if (ImageHistory.Count > 0)
+            {
                 XRayAfter.XRayBitmap = ImageHistory.Pop();
             }
         }
@@ -125,25 +126,29 @@ namespace XRayImageProcessing.Models
             imagesDiff.XRayBitmap = imagesDiffWritable.ToBitmapImage();
         }
 
-        public void DetectSquares(XRayImage xRayImageAfter, XRayImage imagesDiff, SquareDetector squareDetector)
+        public void DetectChanges(XRayImage xRayImageAfter, XRayImage imagesDiff, IDetector detector)
         {
             BitmapImage imageAfter = xRayImageAfter.XRayBitmap;
 
             BitmapSource bitmapSourceAfter = new FormatConvertedBitmap(imageAfter, PixelFormats.Pbgra32, null, 0);
+            WriteableBitmap imagesAfterWritable = new WriteableBitmap(bitmapSourceAfter);
             WriteableBitmap imagesDiffWritable = new WriteableBitmap(bitmapSourceAfter);
 
             var width = imageAfter.PixelWidth;
             var height = imageAfter.PixelHeight;
 
+            var pixelDataAfter = new int[width * height];
             var pixelDataDiff = new int[width * height];
             var widthInByte = 4 * imageAfter.PixelWidth;
 
+            imagesAfterWritable.CopyPixels(pixelDataAfter, widthInByte, 0);
             imagesDiffWritable.CopyPixels(pixelDataDiff, widthInByte, 0);
 
-            squareDetector.Detect(pixelDataDiff, width, height);
+            detector.Detect(pixelDataAfter, pixelDataDiff, width, height);
 
             imagesDiffWritable.WritePixels(new Int32Rect(0, 0, width, height), pixelDataDiff, widthInByte, 0);
             imagesDiff.XRayBitmap = imagesDiffWritable.ToBitmapImage();
         }
+
     }
 }

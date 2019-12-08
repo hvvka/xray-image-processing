@@ -1,13 +1,17 @@
 ﻿using Caliburn.Micro;
+using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using XRayImageProcessing.Models;
 using XRayImageProcessing.Models.Comparators;
 using XRayImageProcessing.Models.Detectors;
 using XRayImageProcessing.Models.Processors;
+using XRayImageProcessing.Models.Tumors;
 
 namespace XRayImageProcessing.ViewModels
 {
@@ -15,8 +19,11 @@ namespace XRayImageProcessing.ViewModels
     {
         private string _chosenPath = "default";
 
+        private const int _fixedSquareColor = 145;
+
         public override event PropertyChangedEventHandler PropertyChanged;
 
+        public double DetectionThreshold { get; set; } = 99.5;
         public int BorderWidth { get; set; } = 150;
         public int PercentCovered { get; set; } = 40;
         public int SquareNumberBorder { get; set; } = 128;
@@ -27,6 +34,27 @@ namespace XRayImageProcessing.ViewModels
             set
             {
                 _chosenPath = value;
+                OnPropertyChanged();
+            }
+        }
+        public IEnumerable<Tumor> _tumors = Enumerable.Empty<Tumor>();
+        public IEnumerable<Tumor> Tumors
+        {
+            get => _tumors;
+            set
+            {
+                _tumors = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private Tumor _chosenTumor;
+        public Tumor ChosenTumor
+        {
+            get => _chosenTumor;
+            set
+            {
+                _chosenTumor = value;
                 OnPropertyChanged();
             }
         }
@@ -64,10 +92,18 @@ namespace XRayImageProcessing.ViewModels
 
         public ShellViewModel()
         {
-            // TODO: Relative path
             ChosenPath = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\Resources\samples\00030636_017.png"));
             ImageProcessor = new ImageProcessor(new Uri(ChosenPath));
             OpenNewImage(ChosenPath);
+
+            Tumors = JsonConvert.DeserializeObject<IEnumerable<Tumor>>(File.ReadAllText(@"..\..\Resources\tumors\tumors.json")) as List<Tumor>;
+            foreach (Tumor tumor in Tumors)
+            {
+                var path = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\Resources\tumors\" + tumor.Name + ".png"));
+                tumor.LoadBitmap(new Uri(path));
+                tumor.ComputeColor();
+            }
+            _chosenTumor = Tumors.FirstOrDefault();
         }
 
         private void OpenNewImage(string path) => ImageProcessor = new ImageProcessor(new Uri(path), ImageProcessor.XRayBefore, ImageProcessor.XRayAfter, ImageProcessor.XRayImagesDiff);
@@ -96,9 +132,9 @@ namespace XRayImageProcessing.ViewModels
 
         public void AddFixedSquare()
         {
-            ImageProcessor.ProcessImage(ImageProcessor.XRayAfter, new SquareAdder(70, 145));
+            ImageProcessor.ProcessImage(ImageProcessor.XRayAfter, new SquareAdder(70, _fixedSquareColor));
         }
-        
+
         public void FillBorders()
         {
             BorderFiller.Delta = BorderWidth;
@@ -118,7 +154,20 @@ namespace XRayImageProcessing.ViewModels
 
         public void DetectFixedSquares()
         {
-            ImageProcessor.DetectSquares(ImageProcessor.XRayAfter, ImageProcessor.XRayImagesDiff, new SquareDetector(70, 145));
+            ImageProcessor.DetectChanges(ImageProcessor.XRayAfter, ImageProcessor.XRayImagesDiff, new SquareDetector(70, _fixedSquareColor, DetectionThreshold));
+        }
+
+        public void DetectTumors()
+        {
+            ImageProcessor.DetectChanges(ImageProcessor.XRayAfter, ImageProcessor.XRayImagesDiff, new TumorDetector(_tumors, DetectionThreshold));
+        }
+
+        public void AddTumor()
+        {
+            if (_chosenTumor != null)
+            {
+                ImageProcessor.ProcessImage(ImageProcessor.XRayAfter, new TumorAdder(ChosenTumor));
+            }
         }
     }
 }

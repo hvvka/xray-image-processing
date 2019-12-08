@@ -44,6 +44,9 @@
     <Reference Include="Caliburn.Micro.Platform.Core, Version=3.2.0.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
       <HintPath>..\packages\Caliburn.Micro.3.2.0\lib\net45\Caliburn.Micro.Platform.Core.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
@@ -79,6 +82,8 @@
     <Compile Include="Models\Comparators\BitByBitComparator.cs" />
     <Compile Include="Models\Comparators\IComparator.cs" />
     <Compile Include="Models\Comparators\SubimagesComparator.cs" />
+    <Compile Include="Models\Detectors\IDetector.cs" />
+    <Compile Include="Models\Detectors\TumorDetector.cs" />
     <Compile Include="Models\Processors\FloodFiller.cs" />
     <Compile Include="Models\Processors\BorderFiller.cs" />
     <Compile Include="Models\Detectors\SquareDetector.cs" />
@@ -86,6 +91,8 @@
     <Compile Include="Models\Processors\SquareAdder.cs" />
     <Compile Include="Models\Processors\CircleAdder.cs" />
     <Compile Include="Models\Processors\ImageInverter.cs" />
+    <Compile Include="Models\Processors\TumorAdder.cs" />
+    <Compile Include="Models\Tumors\Tumor.cs" />
     <Compile Include="Models\Util\ImageUtils.cs" />
     <Compile Include="Models\ImageProcessing.cs" />
     <Compile Include="Models\Processors\IProcessor.cs" />

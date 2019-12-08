@@ -54,14 +54,32 @@
             <TextBox Text="{Binding Path=BorderWidth}" Height="auto" Margin="10,10,10,10" TextWrapping="Wrap" VerticalAlignment="Top" Width="auto" ToolTip="Border width"/>
             <TextBox Text="{Binding Path=PercentCovered}" Height="auto" Margin="10,10,10,10" TextWrapping="Wrap" VerticalAlignment="Top" Width="auto" ToolTip="Percent covered"/>
         </StackPanel>
-        <StackPanel Grid.Row="8" Grid.Column="2" Orientation="Horizontal">
+        <StackPanel Grid.Row="9" Grid.Column="2" Orientation="Horizontal">
+            <ComboBox Name="ComboBoxTumors" ItemsSource="{Binding Tumors}" SelectedItem="{Binding Path=ChosenTumor}" IsSynchronizedWithCurrentItem="True" ToolTip="Choose tumor type" Height="auto" Margin="20,10,20,10" VerticalAlignment="Top" Width="auto">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="{Binding TumorBitmap}" MaxWidth="40" MaxHeight="40"/>
+                            <TextBlock Text="{Binding Name}" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            <Button x:Name="AddTumor" Margin="20,10,20,10" Height="auto" Width="auto">Add</Button>
+        </StackPanel>
+        <StackPanel Grid.Row="4" Grid.Column="3" Orientation="Horizontal">
+            <Label Name="LabelDetectionThreshold" Content="Detection threshold [%]" Height="auto" Margin="20,10,20,4" VerticalAlignment="Top" Width="auto"/>
+            <TextBox Text="{Binding Path=DetectionThreshold}" Height="auto" Margin="20,10,20,10" TextWrapping="Wrap" VerticalAlignment="Top" Width="auto" ToolTip="Detection threshold [%]"/>
+        </StackPanel>
+        <Button x:Name="DetectFixedSquares" Grid.Row="5" Grid.Column="3" Margin="20,10,20,10">Detect fixed squares</Button>
+        <Button x:Name="DetectTumors" Grid.Row="6" Grid.Column="3" Margin="20,10,20,10">Detect tumors</Button>
+        <Button x:Name="CompareBitByBit" Grid.Row="7" Grid.Column="3"  Margin="20,10,20,10">Compare bit by bit</Button>
+        <StackPanel Grid.Row="8" Grid.Column="3" Orientation="Horizontal">
             <Button x:Name="CutLungs" Margin="20,10,20,10">Cut lungs</Button>
             <TextBox Text="{Binding Path=SquareNumberBorder}" Height="auto" Margin="10,10,10,10" TextWrapping="Wrap" VerticalAlignment="Top" Width="auto" ToolTip="Number of squares on border"/>
         </StackPanel>
 
-<Button x:Name="DetectFixedSquares" Grid.Row="4" Grid.Column="3" Margin="20,10,20,10">Detect fixed squares</Button>
-        <Button x:Name="CompareBitByBit" Grid.Row="5" Grid.Column="3"  Margin="20,10,20,10">Compare bit by bit</Button>
-        <StackPanel Grid.Row="6" Grid.Column="3" Orientation="Horizontal">
+        <StackPanel Grid.Row="8" Grid.Column="3" Orientation="Horizontal">
             <Button x:Name="CompareSubimages" Margin="20,10,20,10">Compare 4^n subimages</Button>
             <TextBox Text="{Binding Path=PowerForImageDivision}" Margin="20,10,20,10" ToolTip="Power for image division"/>
         </StackPanel>

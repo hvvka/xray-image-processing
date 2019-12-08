@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
 
 namespace XRayImageProcessing.Models.Processors
 {
@@ -21,7 +19,7 @@ namespace XRayImageProcessing.Models.Processors
             {
                 new Tuple<int, int>(Color.Black.ToArgb(), limit)
             };
-            this.FillRanges(data, width, height, ranges, Color.Transparent.ToArgb());
+            FloodFiller.FillRanges(data, width, height, ranges, Color.Transparent.ToArgb());
 
             return data;
         }
@@ -37,7 +35,8 @@ namespace XRayImageProcessing.Models.Processors
             }
         }
 
-        public int[] FillRanges(int[] data, int width, int height, IList<Tuple<int, int>> ranges, int replacement)
+        public static int[] FillRanges(int[] data, int width, int height, IList<Tuple<int, int>> ranges,
+            int replacement)
         {
             foreach (var (lowerBound, upperBound) in ranges)
             {
@@ -49,6 +48,20 @@ namespace XRayImageProcessing.Models.Processors
                     }
                 });
             }
+
+            return data;
+        }
+
+        public static int[] FillEverythingExceptColors(int[] data, int width, int height, IList<int> colors,
+            int replacement)
+        {
+            IterateBitmap(height, width, (h, w) =>
+            {
+                if (!colors.Contains(data[h * width + w]))
+                {
+                    data[h * width + w] = replacement;
+                }
+            });
             return data;
         }
     }

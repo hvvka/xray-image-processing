@@ -21,12 +21,10 @@ namespace XRayImageProcessing.Models.Processors
 
             var tumorColor = -(65536 * _tumor.Color + 256 * _tumor.Color + _tumor.Color);
 
-            var tumorWidth = 0;
             var tumorHeight = 0;
-
             for (var h = y; h < y + _tumor.Height; h++)
             {
-                tumorWidth = 0;
+                var tumorWidth = 0;
                 for (var w = x; w < x + _tumor.Width; w++)
                 {
                     if (tumorPixelData[tumorHeight * _tumor.Width + tumorWidth] == tumorColor)

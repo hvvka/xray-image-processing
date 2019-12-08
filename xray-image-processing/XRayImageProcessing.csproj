@@ -92,6 +92,7 @@
     <Compile Include="Models\Processors\CircleAdder.cs" />
     <Compile Include="Models\Processors\ImageInverter.cs" />
     <Compile Include="Models\Processors\TumorAdder.cs" />
+    <Compile Include="Models\Processors\TumorFloodFill.cs" />
     <Compile Include="Models\Tumors\Tumor.cs" />
     <Compile Include="Models\Util\ImageUtils.cs" />
     <Compile Include="Models\ImageProcessing.cs" />

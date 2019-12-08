@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -128,11 +127,11 @@ namespace XRayImageProcessing.Models
 
         public void DetectChanges(XRayImage xRayImageAfter, XRayImage imagesDiff, IDetector detector)
         {
-            BitmapImage imageAfter = xRayImageAfter.XRayBitmap;
+            var imageAfter = xRayImageAfter.XRayBitmap;
 
             BitmapSource bitmapSourceAfter = new FormatConvertedBitmap(imageAfter, PixelFormats.Pbgra32, null, 0);
-            WriteableBitmap imagesAfterWritable = new WriteableBitmap(bitmapSourceAfter);
-            WriteableBitmap imagesDiffWritable = new WriteableBitmap(bitmapSourceAfter);
+            var imagesAfterWritable = new WriteableBitmap(bitmapSourceAfter);
+            var imagesDiffWritable = new WriteableBitmap(bitmapSourceAfter);
 
             var width = imageAfter.PixelWidth;
             var height = imageAfter.PixelHeight;

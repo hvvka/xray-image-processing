@@ -29,9 +29,9 @@ namespace XRayImageProcessing.Models.Tumors
             TumorBitmap = new BitmapImage(uri);
 
             BitmapSource bitmapSource = new FormatConvertedBitmap(TumorBitmap, PixelFormats.Pbgra32, null, 0);
-            var writeableBitmap = new WriteableBitmap(bitmapSource);
-            Height = writeableBitmap.PixelHeight;
-            Width = writeableBitmap.PixelWidth;
+            var writableBitmap = new WriteableBitmap(bitmapSource);
+            Height = writableBitmap.PixelHeight;
+            Width = writableBitmap.PixelWidth;
         }
 
         public int[] GetTumorAsBitsTable()
@@ -39,15 +39,15 @@ namespace XRayImageProcessing.Models.Tumors
             var originalImage = TumorBitmap;
 
             BitmapSource bitmapSource = new FormatConvertedBitmap(originalImage, PixelFormats.Pbgra32, null, 0);
-            var writeableBitmap = new WriteableBitmap(bitmapSource);
+            var writableBitmap = new WriteableBitmap(bitmapSource);
 
-            var height = writeableBitmap.PixelHeight;
-            var width = writeableBitmap.PixelWidth;
+            var height = writableBitmap.PixelHeight;
+            var width = writableBitmap.PixelWidth;
 
             var pixelData = new int[width * height];
             var widthInByte = 4 * width;
 
-            writeableBitmap.CopyPixels(pixelData, widthInByte, 0);
+            writableBitmap.CopyPixels(pixelData, widthInByte, 0);
 
             return pixelData;
         }

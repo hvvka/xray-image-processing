@@ -19,7 +19,7 @@ namespace XRayImageProcessing.ViewModels
     {
         private string _chosenPath = "default";
 
-        private const int _fixedSquareColor = 145;
+        private const int FixedSquareColor = 145;
 
         public override event PropertyChangedEventHandler PropertyChanged;
 
@@ -132,7 +132,7 @@ namespace XRayImageProcessing.ViewModels
 
         public void AddFixedSquare()
         {
-            ImageProcessor.ProcessImage(ImageProcessor.XRayAfter, new SquareAdder(70, _fixedSquareColor));
+            ImageProcessor.ProcessImage(ImageProcessor.XRayAfter, new SquareAdder(70, FixedSquareColor));
         }
 
         public void FillBorders()
@@ -146,7 +146,7 @@ namespace XRayImageProcessing.ViewModels
 
         public void CompareSubimages()
         {
-            if (int.TryParse(PowerForImageDivision, out int power))
+            if (int.TryParse(PowerForImageDivision, out var power))
             {
                 ImageProcessor.CompareImages(ImageProcessor.XRayBefore, ImageProcessor.XRayAfter, ImageProcessor.XRayImagesDiff, new SubimagesComparator(power));
             }
@@ -154,7 +154,7 @@ namespace XRayImageProcessing.ViewModels
 
         public void DetectFixedSquares()
         {
-            ImageProcessor.DetectChanges(ImageProcessor.XRayAfter, ImageProcessor.XRayImagesDiff, new SquareDetector(70, _fixedSquareColor, DetectionThreshold));
+            ImageProcessor.DetectChanges(ImageProcessor.XRayAfter, ImageProcessor.XRayImagesDiff, new SquareDetector(70, FixedSquareColor, DetectionThreshold));
         }
 
         public void DetectTumors()
@@ -168,6 +168,13 @@ namespace XRayImageProcessing.ViewModels
             {
                 ImageProcessor.ProcessImage(ImageProcessor.XRayAfter, new TumorAdder(ChosenTumor));
             }
+        }
+
+        public void FloodFillTumor()
+        {
+            var colors = _tumors.Select(tumor => tumor.ComputedColor).ToList();
+            colors.Add(FixedSquareColor);
+            ImageProcessor.ProcessImage(ImageProcessor.XRayAfter, new TumorFloodFill(colors));
         }
     }
 }

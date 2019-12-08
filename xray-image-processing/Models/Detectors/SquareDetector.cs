@@ -7,15 +7,13 @@ namespace XRayImageProcessing.Models.Detectors
     {
         private readonly int _color;
         private readonly int _sideLength;
-        private readonly double _thresholdPercentage;
         private readonly int _maxFalsePixels;
 
         public SquareDetector(int sideLength, int color, double thresholdPercentage)
         {
             _sideLength = sideLength;
             _color = color;
-            _thresholdPercentage = thresholdPercentage;
-            _maxFalsePixels = Convert.ToInt32(0.01 * (100 - _thresholdPercentage) * _sideLength * _sideLength);
+            _maxFalsePixels = Convert.ToInt32(0.01 * (100 - thresholdPercentage) * _sideLength * _sideLength);
         }
 
         private void DrawDetectedSquare(IList<int> dataDiff, int width, int height, int fullWidth)
@@ -51,11 +49,9 @@ namespace XRayImageProcessing.Models.Detectors
                     {
                         falsePixels++;
 
-                        if (falsePixels > _maxFalsePixels)
-                        {
-                            detectedSquare = false;
-                            break;
-                        }
+                        if (falsePixels <= _maxFalsePixels) continue;
+                        detectedSquare = false;
+                        break;
                     }
                 }
             }

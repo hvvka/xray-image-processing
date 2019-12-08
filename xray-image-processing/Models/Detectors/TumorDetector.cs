@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using XRayImageProcessing.Models.Tumors;
 
 namespace XRayImageProcessing.Models.Detectors
@@ -16,9 +15,14 @@ namespace XRayImageProcessing.Models.Detectors
             _thresholdPercentage = thresholdPercentage;
         }
 
-        private void DrawDetectedTumor(Tumor tumor, IList<int> tumorPixelData, IList<int> dataAfter, IList<int> dataDiff, int width, int height, int fullWidth)
+        private static void DrawDetectedTumor(Tumor tumor, 
+            IList<int> tumorPixelData, 
+            IList<int> dataAfter, 
+            IList<int> dataDiff, 
+            int width, 
+            int height, 
+            int fullWidth)
         {
-
             var tumorBitmapHeight = 0;
 
             for (var h = height; h < height + tumor.Height; h++)
@@ -40,7 +44,7 @@ namespace XRayImageProcessing.Models.Detectors
             }
         }
 
-        private int CountPixelsForTumor(Tumor tumor)
+        private static int CountPixelsForTumor(Tumor tumor)
         {
             var pixelCounter = 0;
             var tumorPixelData = tumor.GetTumorAsBitsTable();
@@ -58,7 +62,13 @@ namespace XRayImageProcessing.Models.Detectors
 
             return pixelCounter;
         }
-        private bool DetectTumor(Tumor tumor, IList<int> tumorPixelData, int maxFalsePixels, IList<int> dataAfter, int width, int height, int fullWidth)
+        private static bool DetectTumor(Tumor tumor, 
+            IList<int> tumorPixelData, 
+            int maxFalsePixels,
+            IList<int> dataAfter, 
+            int width, 
+            int height, 
+            int fullWidth)
         {
             var detectedTumor = true;
             var falsePixels = 0;
@@ -77,7 +87,7 @@ namespace XRayImageProcessing.Models.Detectors
                 {
                     if (tumorPixelData[tumorBitmapHeight * tumor.Width + tumorBitmapWidth] == tumor.ComputedColor)
                     {
-                        if (!(dataAfter[tumorHeight * fullWidth + tumorWidth] == tumor.ComputedColor))
+                        if (dataAfter[tumorHeight * fullWidth + tumorWidth] != tumor.ComputedColor)
                         {
                             falsePixels++;
 
@@ -88,10 +98,8 @@ namespace XRayImageProcessing.Models.Detectors
                             }
                         }
                     }
-
                     tumorBitmapWidth++;
                 }
-
                 tumorBitmapHeight++;
             }
             return detectedTumor;
@@ -100,7 +108,7 @@ namespace XRayImageProcessing.Models.Detectors
 
         public void Detect(IList<int> dataAfter, IList<int> dataDiff, int width, int height)
         {
-            foreach (Tumor tumor in _tumors)
+            foreach (var tumor in _tumors)
             {
                 var maxFalsePixelsForATumor = Convert.ToInt32(0.01 * (100 - _thresholdPercentage) * CountPixelsForTumor(tumor));
                 var tumorPixelData = tumor.GetTumorAsBitsTable();

@@ -74,7 +74,7 @@
         <Button x:Name="DetectFixedSquares" Grid.Row="5" Grid.Column="3" Margin="20,10,20,10">Detect fixed squares</Button>
         <Button x:Name="DetectTumors" Grid.Row="6" Grid.Column="3" Margin="20,10,20,10">Detect tumors</Button>
         <Button x:Name="CompareBitByBit" Grid.Row="7" Grid.Column="3"  Margin="20,10,20,10">Compare bit by bit</Button>
-        <StackPanel Grid.Row="8" Grid.Column="3" Orientation="Horizontal">
+        <StackPanel Grid.Row="8" Grid.Column="2" Orientation="Horizontal">
             <Button x:Name="CutLungs" Margin="20,10,20,10">Cut lungs</Button>
             <TextBox Text="{Binding Path=SquareNumberBorder}" Height="auto" Margin="10,10,10,10" TextWrapping="Wrap" VerticalAlignment="Top" Width="auto" ToolTip="Number of squares on border"/>
         </StackPanel>

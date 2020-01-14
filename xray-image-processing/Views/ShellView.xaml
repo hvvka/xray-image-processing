@@ -54,7 +54,8 @@
             <TextBox Text="{Binding Path=BorderWidth}" Height="auto" Margin="10,10,10,10" TextWrapping="Wrap" VerticalAlignment="Top" Width="auto" ToolTip="Border width"/>
             <TextBox Text="{Binding Path=PercentCovered}" Height="auto" Margin="10,10,10,10" TextWrapping="Wrap" VerticalAlignment="Top" Width="auto" ToolTip="Percent covered"/>
         </StackPanel>
-        <StackPanel Grid.Row="9" Grid.Column="2" Orientation="Horizontal">
+        <Button x:Name="ObtainTumorsPlaces" Grid.Row="9" Grid.Column="2" Margin="20 10">Obtain tumor's potential places</Button>
+        <StackPanel Grid.Row="10" Grid.Column="2" Orientation="Horizontal">
             <ComboBox Name="ComboBoxTumors" ItemsSource="{Binding Tumors}" SelectedItem="{Binding Path=ChosenTumor}" IsSynchronizedWithCurrentItem="True" ToolTip="Choose tumor type" Height="auto" Margin="20,10,20,10" VerticalAlignment="Top" Width="auto">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
@@ -68,6 +69,7 @@
             <Button x:Name="AddTumor" Margin="20,10,20,10" Height="auto" Width="auto">Add</Button>
             <Button x:Name="FloodFillTumor" Margin="20,10,20,10" Height="auto" Width="auto">Flood fill tumor's background</Button>
         </StackPanel>
+        <Button Grid.Row="11" Grid.Column="2" x:Name="AddTumorInLungs" Margin="20,10,20,10" Height="auto" Width="auto">Add in lungs</Button>
         <StackPanel Grid.Row="4" Grid.Column="3" Orientation="Horizontal">
             <Label Name="LabelDetectionThreshold" Content="Detection threshold [%]" Height="auto" Margin="20,10,20,4" VerticalAlignment="Top" Width="auto"/>
             <TextBox Text="{Binding Path=DetectionThreshold}" Height="auto" Margin="20,10,20,10" TextWrapping="Wrap" VerticalAlignment="Top" Width="auto" ToolTip="Detection threshold [%]"/>

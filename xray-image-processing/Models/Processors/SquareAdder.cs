@@ -18,7 +18,7 @@ namespace XRayImageProcessing.Models.Processors
             _size = size;
             _color = color;
         }
-        
+
         public int[] Process(int[] data, int width, int height)
         {
             var random = new Random();

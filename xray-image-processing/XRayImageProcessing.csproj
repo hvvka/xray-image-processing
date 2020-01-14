@@ -83,11 +83,14 @@
     <Compile Include="Models\Comparators\IComparator.cs" />
     <Compile Include="Models\Comparators\SubimagesComparator.cs" />
     <Compile Include="Models\Detectors\IDetector.cs" />
+    <Compile Include="Models\Detectors\IMaskDetector.cs" />
+    <Compile Include="Models\Detectors\MaskDetector.cs" />
     <Compile Include="Models\Detectors\TumorDetector.cs" />
     <Compile Include="Models\Processors\FloodFiller.cs" />
     <Compile Include="Models\Processors\BorderFiller.cs" />
     <Compile Include="Models\Detectors\SquareDetector.cs" />
     <Compile Include="Models\Processors\LungsResection.cs" />
+    <Compile Include="Models\Processors\LungTumorAdder.cs" />
     <Compile Include="Models\Processors\SquareAdder.cs" />
     <Compile Include="Models\Processors\CircleAdder.cs" />
     <Compile Include="Models\Processors\ImageInverter.cs" />

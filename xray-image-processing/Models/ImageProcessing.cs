@@ -19,6 +19,10 @@ namespace XRayImageProcessing.Models
 
         public XRayImage XRayImagesDiff { get; set; }
 
+        public XRayImage ObtainedTumorPlaces { get; set; }
+
+        public int[] ObtainedTumorPlacesPixels { get; set; }
+
         public Stack<BitmapImage> ImageHistory { get; set; }
 
         public ImageProcessor(Uri uri)
@@ -26,10 +30,12 @@ namespace XRayImageProcessing.Models
             XRayBefore = new XRayImage(uri);
             XRayAfter = new XRayImage(uri);
             XRayImagesDiff = new XRayImage(uri);
+            ObtainedTumorPlaces = new XRayImage(uri);
             ImageHistory = new Stack<BitmapImage>();
+            ObtainTumorsPlaces(XRayAfter, ObtainedTumorPlaces, new MaskDetector());
         }
 
-        public ImageProcessor(Uri uri, XRayImage before, XRayImage after, XRayImage diff)
+        public ImageProcessor(Uri uri, XRayImage before, XRayImage after, XRayImage diff, XRayImage obtainedTumorPlaces)
         {
             XRayBefore = before;
             XRayBefore.ChangeToUri(uri);
@@ -37,7 +43,10 @@ namespace XRayImageProcessing.Models
             XRayAfter.ChangeToUri(uri);
             XRayImagesDiff = diff;
             XRayImagesDiff.ChangeToUri(uri);
+            ObtainedTumorPlaces = obtainedTumorPlaces;
+            ObtainedTumorPlaces.ChangeToUri(uri);
             ImageHistory = new Stack<BitmapImage>();
+            ObtainTumorsPlaces(XRayAfter, ObtainedTumorPlaces, new MaskDetector());
         }
 
         public void ProcessImage(XRayImage xRayImage, IProcessor processor)
@@ -149,5 +158,32 @@ namespace XRayImageProcessing.Models
             imagesDiff.XRayBitmap = imagesDiffWritable.ToBitmapImage();
         }
 
+        public void ObtainTumorsPlaces(XRayImage xRayImageAfter, XRayImage obtainedTumorPlaces, IMaskDetector maskDetector)
+        {
+            var imageAfter = xRayImageAfter.XRayBitmap;
+            BitmapSource bitmapSourceAfter = new FormatConvertedBitmap(imageAfter, PixelFormats.Pbgra32, null, 0);
+            var imagesAfterWritable = new WriteableBitmap(bitmapSourceAfter);
+
+            var imageObtainedTumorPlaces = obtainedTumorPlaces.XRayBitmap;
+            BitmapSource bitmapSourceObtainedTumorPlaces = new FormatConvertedBitmap(imageObtainedTumorPlaces, PixelFormats.Pbgra32, null, 0);
+            var imagesObtainedTumorPlacesWritable = new WriteableBitmap(bitmapSourceObtainedTumorPlaces);
+
+            var width = imageAfter.PixelWidth;
+            var height = imageAfter.PixelHeight;
+
+            var pixelDataAfter = new int[width * height];
+            var pixelDataObtainedTumorPlaces = new int[width * height];
+            var widthInByte = 4 * imageAfter.PixelWidth;
+
+            imagesAfterWritable.CopyPixels(pixelDataAfter, widthInByte, 0);
+            imagesObtainedTumorPlacesWritable.CopyPixels(pixelDataObtainedTumorPlaces, widthInByte, 0);
+
+            maskDetector.DetectMask(pixelDataAfter, pixelDataObtainedTumorPlaces, width, height);
+
+            ObtainedTumorPlacesPixels = pixelDataObtainedTumorPlaces;
+
+            imagesObtainedTumorPlacesWritable.WritePixels(new Int32Rect(0, 0, width, height), pixelDataObtainedTumorPlaces, widthInByte, 0);
+            obtainedTumorPlaces.XRayBitmap = imagesObtainedTumorPlacesWritable.ToBitmapImage();
+        }
     }
 }

@@ -15,12 +15,12 @@ namespace XRayImageProcessing.Models.Detectors
             _thresholdPercentage = thresholdPercentage;
         }
 
-        private static void DrawDetectedTumor(Tumor tumor, 
-            IList<int> tumorPixelData, 
-            IList<int> dataAfter, 
-            IList<int> dataDiff, 
-            int width, 
-            int height, 
+        private static void DrawDetectedTumor(Tumor tumor,
+            IList<int> tumorPixelData,
+            IList<int> dataAfter,
+            IList<int> dataDiff,
+            int width,
+            int height,
             int fullWidth)
         {
             var tumorBitmapHeight = 0;
@@ -62,12 +62,12 @@ namespace XRayImageProcessing.Models.Detectors
 
             return pixelCounter;
         }
-        private static bool DetectTumor(Tumor tumor, 
-            IList<int> tumorPixelData, 
+        private static bool DetectTumor(Tumor tumor,
+            IList<int> tumorPixelData,
             int maxFalsePixels,
-            IList<int> dataAfter, 
-            int width, 
-            int height, 
+            IList<int> dataAfter,
+            int width,
+            int height,
             int fullWidth)
         {
             var detectedTumor = true;

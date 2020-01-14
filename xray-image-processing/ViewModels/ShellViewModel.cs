@@ -106,7 +106,7 @@ namespace XRayImageProcessing.ViewModels
             _chosenTumor = Tumors.FirstOrDefault();
         }
 
-        private void OpenNewImage(string path) => ImageProcessor = new ImageProcessor(new Uri(path), ImageProcessor.XRayBefore, ImageProcessor.XRayAfter, ImageProcessor.XRayImagesDiff);
+        private void OpenNewImage(string path) => ImageProcessor = new ImageProcessor(new Uri(path), ImageProcessor.XRayBefore, ImageProcessor.XRayAfter, ImageProcessor.XRayImagesDiff, ImageProcessor.ObtainedTumorPlaces);
 
         private void OnPropertyChanged([CallerMemberName]string caller = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(caller));
 
@@ -115,11 +115,16 @@ namespace XRayImageProcessing.ViewModels
         public void AddCircle() => ImageProcessor.ProcessImage(ImageProcessor.XRayAfter, new CircleAdder());
 
         public void AddSquare() => ImageProcessor.ProcessImage(ImageProcessor.XRayAfter, new SquareAdder());
-        
+
         public void CutLungs()
         {
             LungsResection.SquareNumberBorder = SquareNumberBorder;
             ImageProcessor.ProcessImage(ImageProcessor.XRayAfter, new LungsResection());
+        }
+
+        public void ObtainTumorsPlaces()
+        {
+            ImageProcessor.ObtainTumorsPlaces(ImageProcessor.XRayAfter, ImageProcessor.ObtainedTumorPlaces, new MaskDetector());
         }
 
         public void FloodFill()
@@ -167,6 +172,14 @@ namespace XRayImageProcessing.ViewModels
             if (_chosenTumor != null)
             {
                 ImageProcessor.ProcessImage(ImageProcessor.XRayAfter, new TumorAdder(ChosenTumor));
+            }
+        }
+
+        public void AddTumorInLungs()
+        {
+            if (_chosenTumor != null)
+            {
+                ImageProcessor.ProcessImage(ImageProcessor.XRayAfter, new LungTumorAdder(ChosenTumor, ImageProcessor.ObtainedTumorPlacesPixels));
             }
         }
 

@@ -4,11 +4,11 @@ Computer analysis of medical X-ray images involves many complex methods, such as
 
 ## Methods
 
+![Application after launch](./images/app_startup.png)
+
 Environement: Microsoft Visual Studio WPF (.NET Framework)
 
 ### Dataset
-
-![Application after launch](./images/app_startup.png)
 
 [NIH Chest X-ray Dataset](https://www.kaggle.com/nih-chest-xrays/data) was chosen because chest X-rays are one of the most common and cost-effective medical imaging examinations available.
 
@@ -19,21 +19,21 @@ It consists of 112,120 X-ray images with disease markers from 30,805 unique pati
 The purpose of obfuscation was to create a set of simple operations whose combined action was to produce input-like photos, but still to be able to tell wheter the picture is of given patient.
 
 Operations:
-- Adding a circle. 
+- Adding a **circle**. 
 	
 	It is intended to imitate a tumor in the lungs.
 
-- Adding a square. 
+- Adding a **square**. 
 
 	An object that is easy to detect by the first implementations of [tumor detection](#tumor-detection).
 
 - Adding a real [tumor](#tumors) or cancer-like object.
 
-- Color invertion.
+- **Color inversion**.
 
 - Filling the image with a given color utilizing the [Flood Fill](#flood-fill) algorithm.
 
-- Approximating image with rectangles.
+- **Approximating image with rectangles**.
 
 ### Flood Fill
 
@@ -51,11 +51,11 @@ Flood Fill algorithm was used to obtain an image of the lungs themselves and had
 
 2. **Cutting out body** that is not lungs.
 	
-	Lungs on X-rays are usually darker than the body. To use the whole method implemented in the previous step, it was enough to invert the image colors, fill the darkest area as before, and invert the colors again. However, this approach proved to be insufficient.
+	Lungs on X-rays are usually darker than the body. To use the whole method implemented in the previous step, it was enough to **invert the image colors**, fill the darkest area as before, and invert the colors again. However, this approach proved to be insufficient.
 
 	![The first unsuccessful attempts to cut out the body](./images/wrong-body-cut-out.png)
 
-	Lung cutting required additional processing in the form of approximating the image with rectangles - the image was divided into squares, whose color was averaged based on the colors of the area. The resulting effect is similar to a pixelated or blurry image. Thanks to this, Flood Fill does not fill the area inside the lungs. After filling the body with a transparent color, the effect of zooming with rectangles is undone to have an accurate picture of the lungs.
+	Lung cutting required additional processing in the form of **approximating the image with rectangles** - the image was divided into squares, whose color was averaged based on the colors of the area. The resulting effect is similar to a pixelated or blurry image. Thanks to this, Flood Fill does not fill the area inside the lungs. After filling the body with a transparent color, the effect of approximating with rectangles is undone to have an accurate picture of the lungs.
 
 	![Successful body removal](./images/success-body-cut-out.png)
 
@@ -63,7 +63,7 @@ Flood Fill algorithm was used to obtain an image of the lungs themselves and had
 
 ![Tumor selection drop-down list with a button to add the tumor to the image](./images/tumor-drop-down.png)
 
-In the next stage of work on the project, it was decided to increase the realism of the objects added to the lungs. The Tumor class was created. When the application starts, the tumors are loaded from the JSON file and relevant PNG files into the drop-down list in the main application window.
+In the next stage of work on the project, it was decided to increase the realism of the objects added to the lungs. The _Tumor_ class was created. When the application starts, the tumors are loaded from the JSON file and relevant PNG files into the drop-down list in the main application window.
 
 ```json
 [
